@@ -10,12 +10,12 @@
     "cypress:run:alternate": "cypress run --config-file cypress.config.alternate.ts",
     "cypress:run:prod": "cypress run --config-file cypress.config.prod.ts",
     "elasticsearch": "docker run --rm --name elasticsearch_container -p 9200:9200 -p 9300:9300 -e \"discovery.type=single-node\" -e \"xpack.security.enabled=false\" elasticsearch:8.13.4",
-    "dev": "npx -y concurrently --kill-others \"npm run elasticsearch\" \"npm run server\" \"npm run redisserver\"",
-    "dev:debug": "npx -y concurrently --kill-others \"npm run elasticsearch\" \"npm run server:debug\" \"npm run redisserver\"",
+    "dev": "concurrently --kill-others \"npm run elasticsearch\" \"npm run server\" \"npm run redisserver\"",
+    "dev:debug": "concurrently --kill-others \"npm run elasticsearch\" \"npm run server:debug\" \"npm run redisserver\"",
     "dev:e2e": "nodemon src/server.js",
     "redisserver": "docker run --rm --name ucw_redis -p 6379:6379 redis:7.2-alpine",
-    "server": "npx -y wait-on http://localhost:9200 && nodemon src/server.js",
-    "server:debug": "npx -y wait-on http://localhost:9200 && node --inspect -r ts-node/register ./src/server.js",
+    "server": "wait-on http://localhost:9200 && nodemon src/server.js",
+    "server:debug": "wait-on http://localhost:9200 && node --inspect -r ts-node/register ./src/server.js",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --fix --ext .js,.ts",
     "coverage": "npm test -- --verbose --coverage --watchAll",
@@ -62,6 +62,7 @@
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "babel-plugin-js-logger": "^1.0.17",
+    "concurrently": "^9.0.1",
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "cypress": "^13.7.1",
@@ -76,6 +77,7 @@
     "msw": "^2.2.13",
     "nodemon": "^3.1.0",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "wait-on": "^8.0.1"
   }
 }
