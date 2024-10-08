@@ -65,7 +65,7 @@
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "cypress": "^13.7.1",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.1",
     "eslint-config-mx": "^4.0.0",
     "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-plugin-cypress": "^2.15.1",

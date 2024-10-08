@@ -14,7 +14,7 @@ jobs:
     needs: [setup-env]
 
     steps:
-      - name: Checkout under $GITHUB_WORKSPACE
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up NodeJS
@@ -53,9 +53,6 @@ jobs:
           # Copy the env file to the authentication service
           cp ${ENV_FILE_PATH} ${MXADAPTER_ENV_FILE_PATH}
           
-          cat ${ENV_FILE_PATH}
-          cat ${MXADAPTER_ENV_FILE_PATH}
-
       - name: Run Jest Tests
         run: |
           npm run test
