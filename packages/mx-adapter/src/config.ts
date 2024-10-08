@@ -12,24 +12,24 @@ export const init = (path = ".env") => {
   const { parsed: envs } = result;
 
   // Validate envs
-  if (!envs?.HostUrl) {
+  if (!envs?.HOSTURL) {
     throw new Error("Missing HostUrl. Check README.md and `../.env.example` for more info.");
   }
 
-  if (!envs?.MxClientId && !envs?.MxClientIdProd) {
+  if (!envs?.MXCLIENTID && !envs?.MXCLIENTIDPROD) {
     throw new Error("Missing MxClientId or MxClientIdProd. Check README.md and `../.env.example` for more info.");
   }
 
-  if (!envs?.MxApiSecret && !envs?.MxApiSecretProd) {
+  if (!envs?.MXAPISECRET && !envs?.MXAPISECRETPROD) {
     throw new Error("Missing MxApiSecret or MxApiSecretProd. Check README.md and `../.env.example` for more info.");
   }
 
   return {
-    HostUrl: envs?.HostUrl,
-    MxClientId: envs?.MxClientId,
-    MxApiSecret: envs?.MxApiSecret,
-    MxClientIdProd: envs?.MxClientIdProd,
-    MxApiSecretProd: envs?.MxApiSecretProd
+    HostUrl: envs?.HOSTURL,
+    MxClientId: envs?.MXCLIENTID,
+    MxApiSecret: envs?.MXAPISECRET,
+    MxClientIdProd: envs?.MXCLIENTIDPROD,
+    MxApiSecretProd: envs?.MXAPISECRETPROD
   };
 };
 
