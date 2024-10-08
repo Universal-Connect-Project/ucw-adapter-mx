@@ -203,7 +203,7 @@ function mustQuery(
   const aggregatorQueryTerms = supportedAggregators.map((aggregator) => {
     return {
       exists: {
-        field: `${aggregator}.id`,
+        field: `${aggregator as string}.id`,
       },
     };
   });
@@ -220,7 +220,7 @@ function mustQuery(
             must: institutionJobTypeFilter.map((jobTypeFilter) => {
               return {
                 term: {
-                  [`${aggregator}.${jobTypeFilter}`]: true,
+                  [`${aggregator as string}.${jobTypeFilter}`]: true,
                 },
               };
             }),

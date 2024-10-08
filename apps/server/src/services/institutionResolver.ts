@@ -94,7 +94,7 @@ export async function resolveInstitutionAggregator(
   }
 
   debug(
-    `Resolving institution: ${institutionId} to aggregator: ${aggregator} available aggregators: ${JSON.stringify(aggregators)}`
+    `Resolving institution: ${institutionId} to aggregator: ${aggregator as string} available aggregators: ${JSON.stringify(aggregators)}`
   )
 
   return {
