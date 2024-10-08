@@ -34,9 +34,9 @@ jobs:
           env_vars: ${{ needs.setup-env.outputs.env_vars }}
         run: |
           ENV_FILE_PATH=./apps/server/.env
-          MXADAPTER_ENV_FILE_PATH=./packages/mx-adapter/.env
+          # MXADAPTER_ENV_FILE_PATH=./packages/mx-adapter/.env
           touch ${ENV_FILE_PATH}
-          touch ${MXADAPTER_ENV_FILE_PATH}
+          # touch ${MXADAPTER_ENV_FILE_PATH}
 
           # Vars
           echo -e "${{ env.env_vars }}" >> ${ENV_FILE_PATH}
@@ -51,7 +51,7 @@ jobs:
           # Secrets (can't load these from another job, due to GH security features)          
           
           # Copy the env file to the authentication service
-          cp ${ENV_FILE_PATH} ${MXADAPTER_ENV_FILE_PATH}
+          # cp ${ENV_FILE_PATH} ${MXADAPTER_ENV_FILE_PATH}
 
       - name: Run Jest Tests
         run: |
