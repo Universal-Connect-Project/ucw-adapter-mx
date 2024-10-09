@@ -2,10 +2,15 @@ import * as dotenv from "dotenv";
 
 export const init = (path = ".env") => {
   let envs: Record<string, string> = {};
+  let result: dotenv.DotenvConfigOutput;
 
-  const result: dotenv.DotenvConfigOutput = dotenv.config({
-    path
-  });
+  try {
+    result = dotenv.config({
+      path
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   if (result.error) {
     throw result.error;

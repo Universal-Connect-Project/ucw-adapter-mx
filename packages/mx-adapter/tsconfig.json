@@ -38,9 +38,5 @@
   "exclude": [
     "dist",
     "node_modules",
-    "src/test",
-    "src/__mocks__",
-    "src/*.test.ts",
-    "cypress.config*.ts",
   ]
 }

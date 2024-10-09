@@ -33,9 +33,15 @@ export type AdapterDependencies = {
   envConfig: any;
 }
 
+export type EnvironmentVars = {
+
+
+}
+
 export type AdapterConfig = {
   int: boolean;
   dependencies: AdapterDependencies;
+  envs: EnvironmentVars;
 }
 
 export type VCDependencies = {
