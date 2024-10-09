@@ -65,6 +65,9 @@ const mxAdapterInt = new MxAdapter({
     logClient,
     aggregatorCredentials,
     envConfig: config
+  },
+  envs: {
+    HOSTURL: config.HOSTURL
   }
 });
 
@@ -75,6 +78,9 @@ const mxAdapter = new MxAdapter({
     logClient,
     aggregatorCredentials,
     envConfig: config
+  },
+  envs: {
+    HOSTURL: config.HOSTURL
   }
 });
 const institutionResponse = institutionData.institution;
