@@ -19,14 +19,14 @@ export const getMxAdapterMapObject = (dependencies: AdapterDependencies) => {
       vcAdapter: mxProdGetVC(dependencies),
       widgetAdapter: new MxAdapter({
         int: false,
-        dependencies
+        dependencies,
       })
     },
     mx_int: {
       vcAdapter: mxIntGetVC(dependencies),
       widgetAdapter: new MxAdapter({
         int: true,
-        dependencies
+        dependencies,
       })
     }
   };

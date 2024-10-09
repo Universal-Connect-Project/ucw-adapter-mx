@@ -1,10 +1,10 @@
-import { config } from "dotenv";
+import { getMxAdapterMapObject as mxAdapterMapObject } from "@ucp-npm/mx-adapter";
+
+import config from "./config";
 import { get, REDIS_CONSTANTS, set } from "./services/storageClient/redis";
 import { adapterMapObject as testAdapterMapObject } from "./test-adapter";
-import { getMxAdapterMapObject as mxAdapterMapObject } from "@ucp-npm/mx-adapter";
 import { SophtronAdapter } from "./adapters/sophtron";
 import * as logger from "./infra/logger";
-
 import getSophtronVc from "./services/vcAggregators/sophtronVc";
 import aggregatorCredentials from "./aggregatorCredentials";
 

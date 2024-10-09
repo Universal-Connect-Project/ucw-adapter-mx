@@ -30,18 +30,12 @@ export type AdapterDependencies = {
   cacheClient: CacheClient;
   logClient: LogClient;
   aggregatorCredentials: Record<string, ApiCredentials>;
-  envConfig: any;
-}
-
-export type EnvironmentVars = {
-
-
+  envConfig: Record<string, string>;
 }
 
 export type AdapterConfig = {
   int: boolean;
   dependencies: AdapterDependencies;
-  envs: EnvironmentVars;
 }
 
 export type VCDependencies = {

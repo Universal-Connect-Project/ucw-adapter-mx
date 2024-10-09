@@ -17,14 +17,14 @@ import type {
   WidgetAdapter
 } from "./contract";
 import {ChallengeType, ConnectionStatus} from "./contract";
-import type {AdapterConfig, CacheClient, LogClient} from "./models";
+import type { AdapterConfig, ApiCredentials, CacheClient, LogClient } from "./models";
 
 export const EXTENDED_HISTORY_NOT_SUPPORTED_MSG =
   "Member's institution does not support extended transaction history.";
 export let cacheClient: CacheClient;
 export let logClient: LogClient;
-export let aggregatorCredentials: any;
-export let envConfig: any;
+export let aggregatorCredentials: Record<string, ApiCredentials>;
+export let envConfig: Record<string, string>;
 
 const mapCredentials = (mxCreds: CredentialsResponseBody): Credential[] => {
   if (mxCreds.credentials != null) {
