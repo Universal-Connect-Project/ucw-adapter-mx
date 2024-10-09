@@ -1,5 +1,6 @@
 import { PREFERENCES_REDIS_KEY } from '../services/storageClient/constants'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let storageObject: Record<string, any> = {}
 
 export const clearRedisMock = () => {
@@ -27,6 +28,7 @@ export const get = jest.fn((key: string) => {
   return storageObject[key]
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const set = jest.fn((key: string, value: any) => {
   storageObject[key] = value
 })
