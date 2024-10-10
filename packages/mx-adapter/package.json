@@ -1,6 +1,6 @@
 {
-  "name": "@ucp-npm/mx-adapter-local",
-  "version": "0.0.7-alpha",
+  "name": "@ucp-npm/mx-adapter",
+  "version": "0.0.8-alpha",
   "description": "MX Adapter for the Universal Connect Widget",
   "packageManager": "npm@10.7.0",
   "main": "dist/cjs/index.js",
