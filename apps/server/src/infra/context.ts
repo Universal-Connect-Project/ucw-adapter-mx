@@ -1,7 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import config from "../config"
-import { encrypt, decrypt } from "../utils"
-import { Context } from "../shared/contract"
+import type { Context } from "../shared/contract"
 
 declare global {
   namespace Express {
@@ -29,6 +27,8 @@ export function contextHandler(
   req.context = context
 
   const { send } = res
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   res.send = function (...args: any): any {
     res.send = send
 
