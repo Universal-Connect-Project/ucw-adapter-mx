@@ -1,5 +1,4 @@
 import { VCDataTypes } from "./contract";
-
 import { getVC as getMxVc } from "./getVc";
 import type { VCDependencies } from "./models";
 

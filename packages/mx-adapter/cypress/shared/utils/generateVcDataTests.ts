@@ -51,7 +51,7 @@ const verifyIdentity = ({ aggregator, memberGuid, userId }) => {
 const verifyTransactions = ({ accountId, aggregator, userId }) => {
   cy.request(
     "GET",
-    `/data/aggregator/${aggregator}/user/${userId}/account/${accountId}/transactions${aggregator === "sophtron" ? "?start_time=2021/1/1&end_time=2024/12/31" : ""}`,
+    `/data/aggregator/${aggregator}/user/${userId}/account/${accountId}/transactions`,
   ).should((response) => {
     expect(response.status).to.equal(200);
     expect(response.body).to.haveOwnProperty("jwt");
@@ -73,7 +73,7 @@ const generateVcDataTests = ({ makeAConnection }) =>
       cy.visitWithPostMessageSpy(`/?job_type=${jobType}&user_id=${userId}`)
         .then(() => makeAConnection(jobType))
         .then(() => {
-          // Capture postmessages into variables
+          // Capture postMessages into variables
           cy.get("@postMessage", { timeout: 90000 }).then((mySpy) => {
             const connection = (mySpy as any)
               .getCalls()

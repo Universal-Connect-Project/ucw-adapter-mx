@@ -12,9 +12,11 @@ module.exports = {
     ".eslintrc.js",
     "jest.config.cjs",
     "jestSetup.ts",
-    "cypress.config.mjs",
-    "cypress.config.base.mjs",
-    "cypress/**/*"
+    "cypress.config.js",
+    "cypress.config.base.js",
+    "cypress/**/*",
+    "playwright.config.ts",
+    "playwright/**/*",
   ],
   rules: {
     "@typescript-eslint/no-explicit-any": "off",

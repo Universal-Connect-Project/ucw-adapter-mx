@@ -15,7 +15,6 @@ export type ApiCredentials = {
 export type CacheClient = {
   set: (key: string, value: any) => Promise<void> | void;
   get: (key: string) => Promise<any> | any;
-  constants: Record<string, string>;
 };
 
 export type LogClient = {

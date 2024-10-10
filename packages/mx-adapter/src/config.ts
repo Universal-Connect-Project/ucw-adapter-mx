@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 
-export const init = (path = ".env.test") => {
+export const init = (path = "./.env.test") => {
   let envs: Record<string, string> = {};
   let result: dotenv.DotenvConfigOutput;
 
