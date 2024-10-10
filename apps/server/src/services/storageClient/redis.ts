@@ -8,8 +8,6 @@ import { PREFERENCES_REDIS_KEY } from "./constants";
 
 export * as REDIS_CONSTANTS from "./constants";
 
-export * as REDIS_CONSTANTS from "./constants";
-
 const redisClient = createClient({
   url: config.RedisServer,
 });
