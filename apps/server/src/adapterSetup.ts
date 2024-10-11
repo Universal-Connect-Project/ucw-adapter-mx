@@ -1,7 +1,7 @@
 import { getMxAdapterMapObject as mxAdapterMapObject } from "@ucp-npm/mx-adapter";
 
 import config from "./config";
-import { get, set } from "./services/storageClient/redis";
+import { get, set, REDIS_CONSTANTS } from "./services/storageClient/redis";
 import { adapterMapObject as testAdapterMapObject } from "./test-adapter";
 import { SophtronAdapter } from "./adapters/sophtron";
 import * as logger from "./infra/logger";
@@ -21,6 +21,7 @@ export const adapterMap = {
     cacheClient: {
       set: set,
       get: get,
+      constants: REDIS_CONSTANTS
     },
     logClient: logger,
     aggregatorCredentials,
