@@ -46,7 +46,7 @@ jobs:
 
       - name: 'Create env file'
         run: |
-          ENV_FILE_PATH=./apps/server/.env
+          ENV_FILE_PATH=./packages/mx-adapter/.env.test
           touch ${ENV_FILE_PATH}
 
           # Vars
@@ -58,8 +58,6 @@ jobs:
           echo MXAPISECRET=${{ secrets.MX_API_SECRET }} >> ${ENV_FILE_PATH}
 
           echo HostUrl=http://localhost:8080 >> ${ENV_FILE_PATH}
-
-          cat ${ENV_FILE_PATH}
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
