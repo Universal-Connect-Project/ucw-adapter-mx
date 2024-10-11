@@ -46,7 +46,7 @@ jobs:
 
       - name: 'Create env file'
         run: |
-          ENV_FILE_PATH=./packages/mx-adapter/.env.test
+          ENV_FILE_PATH=./apps/server/.env
           touch ${ENV_FILE_PATH}
 
           # Vars
