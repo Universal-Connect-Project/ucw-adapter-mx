@@ -5,7 +5,7 @@ import { logClient } from "./__mocks__/logClient";
 
 import { EXTENDED_HISTORY_NOT_SUPPORTED_MSG, MxAdapter } from "./adapter";
 
-import config from "./config";
+import init from "./config";
 import { ChallengeType, ConnectionStatus } from "./contract";
 
 import {
@@ -36,6 +36,8 @@ import {
 } from "./test/testData/members";
 import { createUserData, listUsersData } from "./test/testData/users";
 import { server } from "./test/testServer";
+
+const config = init();
 
 export const cacheClient = createCacheClient();
 

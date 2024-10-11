@@ -1,5 +1,5 @@
 {
-  "name": "mx-adapter",
+  "name": "@ucp-npm/mx-adapter",
   "version": "0.0.8-alpha",
   "description": "MX Adapter for the Universal Connect Widget",
   "packageManager": "npm@10.8.2",

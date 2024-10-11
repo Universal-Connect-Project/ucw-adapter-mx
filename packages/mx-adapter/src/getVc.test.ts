@@ -9,7 +9,7 @@ import { server } from "./test/testServer";
 
 import { logClient } from "./__mocks__/logClient";
 
-import config from "./config";
+import init from "./config";
 import { getVC } from "./getVc";
 import type { AdapterDependencies } from "./models";
 import { aggregatorCredentials, cacheClient } from "./adapter.test";
@@ -20,7 +20,7 @@ const dependencies: AdapterDependencies = {
   logClient,
   cacheClient,
   aggregatorCredentials,
-  envConfig: config
+  envConfig: init()
 };
 
 describe("mx vc", () => {

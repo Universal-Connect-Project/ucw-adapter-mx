@@ -1,4 +1,4 @@
-import config from "./config";
+import init from "./config";
 import type { AdapterDependencies } from "./models";
 import { logClient } from "./__mocks__/logClient";
 import { aggregatorCredentials, cacheClient } from "./adapter.test";
@@ -17,7 +17,7 @@ const dependencies: AdapterDependencies = {
   logClient,
   cacheClient,
   aggregatorCredentials,
-  envConfig: config
+  envConfig: init()
 };
 
 

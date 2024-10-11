@@ -33,4 +33,4 @@ export const init = (path = "./.env.test") => {
   };
 };
 
-export default init();
+export default init;
