@@ -21,7 +21,6 @@ export const adapterMap = {
     cacheClient: {
       set: set,
       get: get,
-      constants: REDIS_CONSTANTS
     },
     logClient: logger,
     aggregatorCredentials,
