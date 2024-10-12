@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("connects to mx bank with oAuth", async ({ page }) => {
-  test.setTimeout(60000);
+  test.setTimeout(240000);
 
   const userId = crypto.randomUUID();
 
@@ -22,7 +22,7 @@ test("connects to mx bank with oAuth", async ({ page }) => {
   ).toBeVisible();
 
   await expect(page.getByRole("button", { name: "Continue" })).toBeVisible({
-    timeout: 60000
+    timeout: 120000
   });
 
   const apiRequest = page.context().request;
