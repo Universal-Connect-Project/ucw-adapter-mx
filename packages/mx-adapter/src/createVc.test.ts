@@ -1,4 +1,5 @@
-import init from "./config";
+import 'dotenv/config'
+
 import type { AdapterDependencies } from "./models";
 import { logClient } from "./__mocks__/logClient";
 import { aggregatorCredentials, cacheClient } from "./adapter.test";
@@ -17,7 +18,7 @@ const dependencies: AdapterDependencies = {
   logClient,
   cacheClient,
   aggregatorCredentials,
-  envConfig: init()
+  envConfig: process.env
 };
 
 

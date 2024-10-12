@@ -1,11 +1,9 @@
 import { http, HttpResponse } from "msw";
+import 'dotenv/config'
 
 import { createClient as createCacheClient } from "./__mocks__/cacheClient";
 import { logClient } from "./__mocks__/logClient";
-
 import { EXTENDED_HISTORY_NOT_SUPPORTED_MSG, MxAdapter } from "./adapter";
-
-import init from "./config";
 import { ChallengeType, ConnectionStatus } from "./contract";
 
 import {
@@ -37,22 +35,20 @@ import {
 import { createUserData, listUsersData } from "./test/testData/users";
 import { server } from "./test/testServer";
 
-const config = init();
-
 export const cacheClient = createCacheClient();
 
 export const aggregatorCredentials = {
   mxInt: {
-    username: config.MXCLIENTID,
-    password: config.MXAPISECRET,
+    username: process.env.MXCLIENTID,
+    password: process.env.MXAPISECRET,
     basePath: "https://int-api.mx.com",
     vcEndpoint: "https://int-api.mx.com/",
     aggregator: "mx_int",
     available: true
   },
   mxProd: {
-    username: config.MXCLIENTIDPROD,
-    password: config.MXAPISECRETPROD,
+    username: process.env.MXCLIENTIDPROD,
+    password: process.env.MXAPISECRETPROD,
     basePath: "https://api.mx.com",
     vcEndpoint: "https://api.mx.com/",
     aggregator: "mx",
@@ -66,7 +62,7 @@ const mxAdapterInt = new MxAdapter({
     cacheClient,
     logClient,
     aggregatorCredentials,
-    envConfig: config
+    envConfig: process.env
   }
 });
 
@@ -76,11 +72,11 @@ const mxAdapter = new MxAdapter({
     cacheClient,
     logClient,
     aggregatorCredentials,
-    envConfig: config
+    envConfig: process.env
   }
 });
 const institutionResponse = institutionData.institution;
-const clientRedirectUrl = `${config.HOSTURL}/oauth_redirect`;
+const clientRedirectUrl = `${process.env.HOSTURL}/oauth_redirect`;
 
 const testCredential = {
   id: "testCredentialId",

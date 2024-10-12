@@ -17,6 +17,8 @@ module.exports = {
     "cypress/**/*",
     "playwright.config.ts",
     "playwright/**/*",
+    "__mocks__/",
+    "*.test.*",
   ],
   rules: {
     "@typescript-eslint/no-explicit-any": "off",

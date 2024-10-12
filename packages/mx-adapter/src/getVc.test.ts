@@ -1,4 +1,5 @@
 import { HttpResponse, http } from "msw";
+import 'dotenv/config'
 
 import {
   MX_INTEGRATION_VC_GET_ACCOUNTS_PATH,
@@ -9,7 +10,6 @@ import { server } from "./test/testServer";
 
 import { logClient } from "./__mocks__/logClient";
 
-import init from "./config";
 import { getVC } from "./getVc";
 import type { AdapterDependencies } from "./models";
 import { aggregatorCredentials, cacheClient } from "./adapter.test";
@@ -20,7 +20,7 @@ const dependencies: AdapterDependencies = {
   logClient,
   cacheClient,
   aggregatorCredentials,
-  envConfig: init()
+  envConfig: process.env
 };
 
 describe("mx vc", () => {
