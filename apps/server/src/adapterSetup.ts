@@ -1,9 +1,9 @@
-import { ApiCredentials, getMxAdapterMapObject as mxAdapterMapObject } from "@ucp-npm/mx-adapter";
+import { getMxAdapterMapObject as mxAdapterMapObject } from "@ucp-npm/mx-adapter";
 
 import config from "./config";
-import { get, set } from "./services/storageClient/redis";
 import { adapterMapObject as testAdapterMapObject } from "./test-adapter";
 import { SophtronAdapter } from "./adapters/sophtron";
+import { get, set } from "./services/storageClient/redis";
 import * as logger from "./infra/logger";
 import getSophtronVc from "./services/vcAggregators/sophtronVc";
 import aggregatorCredentials from "./aggregatorCredentials";
@@ -24,8 +24,8 @@ export const adapterMap = {
     },
     logClient: logger,
     aggregatorCredentials: {
-      ...aggregatorCredentials.mxInt as ApiCredentials,
-      ...aggregatorCredentials.mxProd as ApiCredentials,
+      mxInt: aggregatorCredentials.mxInt,
+      mxProd: aggregatorCredentials.mxProd,
     },
     envConfig: {
       HOSTURL: config.HOST_URL,
