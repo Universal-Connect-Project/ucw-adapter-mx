@@ -24,7 +24,7 @@ const keysToPullFromEnv = [
 
   'PORT',
 
-  'HostUrl',
+  'HOSTURL',
   'WebhookHostUrl',
   'LogLevel',
 

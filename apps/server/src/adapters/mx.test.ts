@@ -39,7 +39,7 @@ const mxAdapter = new MxAdapter(false)
 
 const institutionResponse = institutionData.institution
 
-const clientRedirectUrl = `${config.HostUrl}/oauth_redirect`
+const clientRedirectUrl = `${config.HOSTURL}/oauth_redirect`
 
 const testCredential = {
   id: 'testCredentialId',

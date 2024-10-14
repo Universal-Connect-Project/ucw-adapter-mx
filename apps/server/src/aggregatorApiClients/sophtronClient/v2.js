@@ -14,7 +14,7 @@ export default class SophtronV2Client extends SophtronBaseClient {
   async createCustomer(uniqueName) {
     return await this.post('/v2/customers', {
       UniqueID: uniqueName,
-      Source: `Universal_Widget_${config.HostUrl}`,
+      Source: `Universal_Widget_${config.HOSTURL}`,
       Name: 'UniversalWidget_Customer'
     })
   }

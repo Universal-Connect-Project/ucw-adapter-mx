@@ -15,6 +15,8 @@ const sophtronAdapterMapObject = {
   },
 };
 
+console.log('config:', config);
+
 // This is where you add adapters
 export const adapterMap = {
   ...mxAdapterMapObject({
