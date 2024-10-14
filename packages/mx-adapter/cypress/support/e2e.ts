@@ -31,10 +31,9 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  const testAggregators = ['mx_int']
+  const aggregator = 'mx_int';
   const userId = Cypress.env('userId')
 
-  testAggregators.forEach((aggregator) => {
     cy.request({
       method: 'DELETE',
       url: `/api/aggregator/${aggregator}/user/${userId}`,
@@ -42,8 +41,5 @@ afterEach(() => {
     }).should((response) => {
       expect(response.status).to.be.oneOf([200, 204, 400])
     })
-  })
 })
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
