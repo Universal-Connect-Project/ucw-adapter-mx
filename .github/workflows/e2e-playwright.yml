@@ -59,6 +59,8 @@ jobs:
 
           echo HOSTURL=http://localhost:8080 >> ${ENV_FILE_PATH}
 
+          cat ${ENV_FILE_PATH}
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
