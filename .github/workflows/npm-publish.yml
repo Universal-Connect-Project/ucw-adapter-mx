@@ -25,13 +25,6 @@ jobs:
         run: |
           npm ci
 
-      - name: 'Modify name of the package.json prior to publishing'
-        uses: maxgfr/github-change-json@v0.0.26
-        with:
-          key: 'name'
-          value: '@ucp-npm/mx-adapter'
-          path: ./packages/mx-adapter/package.json
-
       - name: 'Publish to NPM'
         uses: JS-DevTools/npm-publish@v3
         with:
