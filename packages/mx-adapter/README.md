@@ -11,8 +11,11 @@ Navigate to your forked project and, from the root of the project, run:
 ```bash
 npm i @ucp-npm/mx-adapter --workspace apps/server
 ```
+## Usage
 
-Then, in the `./apps/server/adapterSetup.ts` file, do the following:
+Once you have the npm package installed, you can set up the ucw to use it.
+
+In the `./apps/server/adapterSetup.ts` file, do the following:
 
 Import the `adapterMapObject` for mx:
 
@@ -54,9 +57,6 @@ export const adapterMap = {
 ````
 
 The dependencies `cacheClient` and `logClient` are provided by the Universal Connect Widget.
-## Usage
-
-coming soon
 
 ## Contributing
 
