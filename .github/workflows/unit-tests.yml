@@ -29,6 +29,8 @@ jobs:
 
       - run: npm run copyTestPreferences
 
+      - run: npm run build --workspace packages/mx-adapter
+
       - name: 'Create env file'
         env:
           env_vars: ${{ needs.setup-env.outputs.env_vars }}
