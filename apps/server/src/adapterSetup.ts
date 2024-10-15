@@ -28,7 +28,7 @@ export const adapterMap = {
       mxProd: aggregatorCredentials.mxProd,
     },
     envConfig: {
-      HOSTURL: config.HOST_URL,
+      HOSTURL: config.HOSTURL,
       MXCLIENTID: config.MXCLIENTID,
       MXAPISECRET: config.MXAPISECRET,
       MXCLIENTIDPROD: config.MXCLIENTIDPROD,
