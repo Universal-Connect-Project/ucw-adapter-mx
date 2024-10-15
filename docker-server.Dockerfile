@@ -18,7 +18,7 @@ ARG WRKDR
 WORKDIR ${WRKDR}
 
 COPY . ${WRKDR}
-RUN turbo prune --scope=${APP} --docker
+RUN turbo prune ${APP} --docker
 
 FROM base AS builder
 ARG APP
@@ -27,11 +27,14 @@ ARG WRKDR
 WORKDIR ${WRKDR}
 
 COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
-COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils
+COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils/package.json
+COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/mx-adapter/package.json
+COPY --from=pruner ${WRKDR}/out/full/packages/mx-adapter/scripts/rename-esm.sh ./packages/mx-adapter/scripts/rename-esm.sh
 COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
-RUN npm ci --omit=dev --ignore-scripts \
-    && npm run build --workspace packages/mx-adapter
+RUN npm i -g turbo tsc \
+    && npm ci
+RUN echo $(turbo run build --filter=packages/mx-adapter)
 
 FROM base AS runner
 ARG APP
@@ -39,13 +42,14 @@ ARG WRKDR
 
 WORKDIR ${WRKDR}
 
-RUN npm i -g ts-node  \
+RUN npm i -g ts-node \
     && addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nodejs
 USER nodejs
 
 COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ .
 COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./packages/utils
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/mx-adapter/ ./packages/mx-adapter
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 
 EXPOSE ${PORT}
