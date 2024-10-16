@@ -38,9 +38,7 @@ COPY --from=pruner ${WRKDR}/out/full/ .
 
 RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
-RUN echo $(turbo run build --filter=@ucp-npm/mx-adapter)
-#RUN npm run build:esm --workspace packages/mx-adapter
-#RUN ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
+RUN turbo run build --filter=@ucp-npm/mx-adapter
 
 FROM base AS runner
 ARG APP
