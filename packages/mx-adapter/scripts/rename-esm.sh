@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/ash
 
 for file in ./dist/esm/*.js; do
   echo "Updating $file contents..."
