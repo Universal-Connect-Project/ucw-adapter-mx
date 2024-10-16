@@ -56,6 +56,10 @@ COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./pac
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ./packages/mx-adapter/dist
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 
+RUN echo "------------------------------------"
+RUN echo $(ls -al ./packages/mx-adapter/dist)
+RUN echo "------------------------------------"
+
 EXPOSE ${PORT}
 
 CMD ["ts-node", "./src/server.js"]
