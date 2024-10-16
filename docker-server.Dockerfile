@@ -7,7 +7,7 @@ ARG WRKDR=/opt/app
 FROM alpine:3.20.3 AS base
 ENV NODE_VERSION 20.15.0
 
-RUN apk --update --no-cache --virtual add nodejs npm \
+RUN apk --update --no-cache --virtual add nodejs npm bash \
     && rm -rf /var/cache/apk/*
 
 FROM base AS pruner
