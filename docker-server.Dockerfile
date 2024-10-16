@@ -7,7 +7,7 @@ ARG WRKDR=/opt/app
 FROM alpine:3.20.3 AS base
 ENV NODE_VERSION 20.15.0
 
-RUN apk --update --no-cache --virtual add nodejs npm \
+RUN apk --update --no-cache --virtual add nodejs npm bash \
     && rm -rf /var/cache/apk/*
 
 FROM base AS pruner
@@ -38,10 +38,9 @@ COPY --from=pruner ${WRKDR}/out/full/ .
 
 RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
-#RUN echo $(turbo run build --workspace packages/mx-adapter)
-RUN echo $(ls ${WRKDR}/packages/mx-adapter/scripts)
-RUN npm run build:esm --workspace packages/mx-adapter
-RUN ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
+RUN echo $(turbo run build --workspace packages/mx-adapter)
+#RUN npm run build:esm --workspace packages/mx-adapter
+#RUN ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
 FROM base AS runner
 ARG APP
