@@ -36,14 +36,11 @@ RUN npm i -g turbo tsc \
 
 COPY --from=pruner ${WRKDR}/out/full/ .
 
-RUN echo $(ls ./packages)
-RUN echo $(ls ./packages/mx-adapter/scripts)
-RUN echo $(pwd)
+RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
 #RUN echo $(turbo run build --workspace packages/mx-adapter)
-WORKDIR ./packages/mx-adapter
-RUN echo $(pwd)
-RUN echo $(npm run build)
+RUN cd ${WRKDR}/packages/mx-adapter
+RUN npm run build
 
 FROM base AS runner
 ARG APP
