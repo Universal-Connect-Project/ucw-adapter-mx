@@ -85,7 +85,7 @@ export class AggregatorAdapterBase {
       id,
       this.context.job_type as MappedJobTypes
     )
-    this.context.aggregator = resolvedInstitution.aggregator
+    this.context.aggregator = resolvedInstitution.aggregator as string
     this.context.updated = true
     this.context.institution_id = resolvedInstitution.id
     this.context.resolved_user_id = null
