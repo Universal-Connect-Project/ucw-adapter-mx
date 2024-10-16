@@ -57,7 +57,7 @@ COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ./pa
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 
 RUN echo "------------------------------------"
-RUN echo $(ls -al ./packages/mx-adapter/dist)
+RUN ls -al ./packages/mx-adapter/dist
 RUN echo "------------------------------------"
 
 EXPOSE ${PORT}
