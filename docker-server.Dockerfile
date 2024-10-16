@@ -34,7 +34,7 @@ COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
 RUN npm i -g turbo tsc \
     && npm ci
-RUN echo $(turbo run build --filter=packages/mx-adapter)
+RUN echo $(turbo run build --filter=@ucp-npm/mx-adapter)
 
 FROM base AS runner
 ARG APP
