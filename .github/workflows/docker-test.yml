@@ -62,6 +62,10 @@ jobs:
         run: |
           docker compose up --build --wait --detach
 
+      - name: Setup tmate session
+        if: success() || failure()
+        uses: mxschmitt/action-tmate@v3
+
       - name: "Check if build passed"
         run: |
           BUILD_CHECK=$(docker logs ucw-app-server 2>&1 | grep "App initialized successfully")
