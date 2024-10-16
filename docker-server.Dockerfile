@@ -53,6 +53,7 @@ RUN npm i -g ts-node \
 USER nodejs
 
 COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/ .
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ./packages/mx-adapter/dist
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 
 EXPOSE ${PORT}
