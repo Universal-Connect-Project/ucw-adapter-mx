@@ -29,11 +29,14 @@ WORKDIR ${WRKDR}
 COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
 COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils/package.json
 COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/mx-adapter/package.json
-COPY --from=pruner ${WRKDR}/out/full/packages/mx-adapter/scripts/rename-esm.sh ./packages/mx-adapter/scripts/rename-esm.sh
 COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
 RUN npm i -g turbo tsc \
     && npm ci
+
+COPY --from=pruner ${WRKDR}/out/full/ .
+
+RUN echo $(ls .)
 RUN echo $(turbo run build --filter=@ucp-npm/mx-adapter)
 
 FROM base AS runner

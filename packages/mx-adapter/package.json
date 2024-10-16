@@ -30,7 +30,7 @@
     "pack": "npm run clean && npm run build && npm pack",
     "test": "jest --no-coverage",
     "test:watch": "npx -y cross-env DEBUG_PRINT_LIMIT=50000 jest --no-coverage --watch",
-    "rename:esm": "scripts/rename-esm.sh",
+    "rename:esm": "./scripts/rename-esm.sh",
     "prepack": "npm run clean && npm run build"
   },
   "repository": {
