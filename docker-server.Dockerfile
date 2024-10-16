@@ -20,7 +20,7 @@ ARG WRKDR
 WORKDIR ${WRKDR}
 
 COPY . ${WRKDR}
-RUN turbo prune ${APP} --docker
+RUN turbo prune --scope=${APP} --docker
 
 FROM base AS builder
 ARG APP
@@ -28,20 +28,18 @@ ARG WRKDR
 
 WORKDIR ${WRKDR}
 
-COPY --from=pruner ${WRKDR}/out/full/ ${WRKDR}
-COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json ${WRKDR}
-COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ${WRKDR}/packages/utils/package.json
-COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ${WRKDR}/packages/mx-adapter/package.json
-COPY --from=pruner ${WRKDR}/out/package-lock.json ${WRKDR}
+COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
+COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils
+COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/mx-adapter
+COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
 RUN npm i -g turbo tsc \
     && npm ci
 
-RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
+RUN chmod +x ./packages/mx-adapter/scripts/rename-esm.sh
 
+COPY --from=pruner ${WRKDR}/out/full/ .
 RUN turbo run build --filter=@ucp-npm/mx-adapter
-
-RUN ls -al ${WRKDR}/packages/mx-adapter/dist
 
 FROM base AS runner
 ARG APP
@@ -54,12 +52,9 @@ RUN npm i -g ts-node \
     && adduser --system --uid 1001 nodejs
 USER nodejs
 
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ ${WRKDR}
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ${WRKDR}/packages/utils
-COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ${WRKDR}/packages/mx-adapter/dist
-COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ${WRKDR}/node_modules
-
-RUN ls -al ${WRKDR}/packages/mx-adapter/dist
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./packages/utils
+COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ./packages/mx-adapter/dist
+#COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ${WRKDR}/node_modules
 
 EXPOSE ${PORT}
 
