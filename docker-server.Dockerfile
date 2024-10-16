@@ -36,7 +36,7 @@ COPY --from=pruner ${WRKDR}/out/package-lock.json .
 RUN npm i -g turbo tsc \
     && npm ci
 
-RUN chmod +x ./packages/mx-adapter/scripts/rename-esm.sh
+RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
 COPY --from=pruner ${WRKDR}/out/full/ .
 RUN turbo run build --filter=@ucp-npm/mx-adapter
