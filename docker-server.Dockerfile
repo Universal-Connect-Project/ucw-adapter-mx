@@ -37,8 +37,10 @@ RUN npm i -g turbo tsc \
 COPY --from=pruner ${WRKDR}/out/full/ .
 
 RUN echo $(ls ./packages)
-RUN echo $(ls ./packages/mx-adapter)
-RUN echo $(turbo run build --filter=@ucp-npm/mx-adapter)
+RUN echo $(ls ./packages/mx-adapter/scripts)
+#RUN echo $(turbo run build --workspace packages/mx-adapter)
+RUN cd ./packages/mx-adapter \
+    && echo $(npm run build)
 
 FROM base AS runner
 ARG APP
