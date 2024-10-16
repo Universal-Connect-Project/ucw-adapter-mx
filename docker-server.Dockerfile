@@ -26,15 +26,15 @@ ARG WRKDR
 
 WORKDIR ${WRKDR}
 
-COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
-COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils/package.json
-COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/mx-adapter/package.json
-COPY --from=pruner ${WRKDR}/out/package-lock.json .
+COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json ${WRKDR}
+COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ${WRKDR}/packages/utils/package.json
+COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ${WRKDR}/packages/mx-adapter/package.json
+COPY --from=pruner ${WRKDR}/out/package-lock.json ${WRKDR}
 
 RUN npm i -g turbo tsc \
     && npm ci
 
-COPY --from=pruner ${WRKDR}/out/full/ .
+COPY --from=pruner ${WRKDR}/out/full/ ${WRKDR}
 
 RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
@@ -51,14 +51,12 @@ RUN npm i -g ts-node \
     && adduser --system --uid 1001 nodejs
 USER nodejs
 
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ .
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./packages/utils
-COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ./packages/mx-adapter/dist
-COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ ${WRKDR}
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ${WRKDR}/packages/utils
+COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ${WRKDR}/packages/mx-adapter/dist
+COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ${WRKDR}/node_modules
 
-RUN echo "------------------------------------"
-RUN ls -al ./packages/mx-adapter/dist
-RUN echo "------------------------------------"
+RUN ls -al ${WRKDR}/packages/mx-adapter/dist
 
 EXPOSE ${PORT}
 
