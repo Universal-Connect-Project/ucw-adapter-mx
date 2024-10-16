@@ -10,7 +10,7 @@ export function getAggregatorAdapter(aggregator: Aggregator): WidgetAdapter {
     return widgetAdapter
   }
 
-  throw new Error(`Unsupported aggregator ${aggregator as string}`)
+  throw new Error(`Unsupported aggregator ${aggregator}`)
 }
 
 export async function getVC({
@@ -33,7 +33,7 @@ export async function getVC({
   const vcAdapter = adapterMap[aggregator]?.vcAdapter
 
   if (vcAdapter) {
-    info('Getting vc from aggregator', aggregator as string)
+    info('Getting vc from aggregator', aggregator)
 
     return vcAdapter({
       accountId,
@@ -45,5 +45,5 @@ export async function getVC({
     })
   }
 
-  throw new Error(`Unsupported aggregator ${aggregator as string}`)
+  throw new Error(`Unsupported aggregator ${aggregator}`)
 }

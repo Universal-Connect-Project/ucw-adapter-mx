@@ -39,6 +39,7 @@ COPY --from=pruner ${WRKDR}/out/full/ .
 RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
 RUN turbo run build --filter=@ucp-npm/mx-adapter
+RUN ls -al ${WRKDR}/packages/mx-adapter/dist
 
 FROM base AS runner
 ARG APP
@@ -51,9 +52,7 @@ RUN npm i -g ts-node \
     && adduser --system --uid 1001 nodejs
 USER nodejs
 
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ .
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./packages/utils
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/mx-adapter/ ./packages/mx-adapter
+COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/ .
 COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 
 EXPOSE ${PORT}
