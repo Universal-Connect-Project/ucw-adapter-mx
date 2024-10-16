@@ -42,6 +42,7 @@ RUN echo $(pwd)
 
 #RUN echo $(turbo run build --workspace packages/mx-adapter)
 WORKDIR ./packages/mx-adapter
+RUN echo $(pwd)
 RUN echo $(npm run build)
 
 FROM base AS runner
