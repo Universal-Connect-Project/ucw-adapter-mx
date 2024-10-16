@@ -39,6 +39,7 @@ COPY --from=pruner ${WRKDR}/out/full/ .
 RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
 #RUN echo $(turbo run build --workspace packages/mx-adapter)
+RUN cd ${WRKDR}/packages/mx-adapter
 RUN npm run build:esm \
     && ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
 
