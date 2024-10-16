@@ -2,12 +2,10 @@
 # See the DOCKER.md file in the root of the project for more information.
 # Please run `docker compose up` from the root of the project to run the docker environment for
 # the UCW-APP project, which this Dockerfile is part of.
-ARG WRKDR=~/app
+ARG WRKDR=/opt/app
 
 FROM alpine:3.20.3 AS base
 ENV NODE_VERSION 20.15.0
-
-RUN $(echo ${WRKDR})
 
 RUN apk --update --no-cache --virtual add nodejs npm bash \
     && rm -rf /var/cache/apk/*
@@ -19,8 +17,8 @@ ARG WRKDR
 
 #WORKDIR ${WRKDR}
 
-COPY . ${WRKDR}
-RUN turbo prune ${APP} --docker
+COPY . .
+RUN turbo prune --scope=${APP} --docker
 
 FROM base AS builder
 ARG APP
