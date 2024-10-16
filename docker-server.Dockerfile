@@ -36,7 +36,8 @@ RUN npm i -g turbo tsc \
 
 COPY --from=pruner ${WRKDR}/out/full/ .
 
-RUN echo $(ls .)
+RUN echo $(ls ./packages)
+RUN echo $(ls ./packages/mx-adapter)
 RUN echo $(turbo run build --filter=@ucp-npm/mx-adapter)
 
 FROM base AS runner

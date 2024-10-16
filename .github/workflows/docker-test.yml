@@ -10,7 +10,7 @@ jobs:
 
   push_to_registry:
     name: "Test Docker Images"
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: [setup-env]
 
     steps:
