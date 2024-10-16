@@ -15,8 +15,8 @@ import type {
   MappedJobTypes,
   Aggregator,
   UpdateConnectionRequest,
-  WidgetAdapter
-} from '../shared/contract'
+  WidgetAdapter, ResolvedInstitution
+} from "../shared/contract";
 import { ConnectionStatus, OAuthStatus } from '../shared/contract'
 import { decodeAuthToken, mapJobType } from '../utils'
 
@@ -80,7 +80,7 @@ export class AggregatorAdapterBase {
     return false
   }
 
-  async resolveInstitution(id: string): Promise<Institution> {
+  async resolveInstitution(id: string): Promise<ResolvedInstitution> {
     const resolvedInstitution = await resolveInstitutionAggregator(
       id,
       this.context.job_type as MappedJobTypes
