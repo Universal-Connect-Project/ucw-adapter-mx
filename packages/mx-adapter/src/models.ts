@@ -41,11 +41,3 @@ export type VCDependencies = {
   logClient: LogClient;
   aggregatorCredentials: any;
 };
-
-// export enum MappedJobTypes {
-//   AGGREGATE = "aggregate",
-//   ALL = "aggregate_identity_verification",
-//   FULLHISTORY = "aggregate_extendedhistory",
-//   VERIFICATION = "verification",
-//   IDENTITY = "aggregate_identity",
-// }
