@@ -20,24 +20,24 @@ WORKDIR ${WRKDR}
 COPY . ${WRKDR}
 RUN turbo prune --scope=${APP} --docker
 
-FROM base AS builder
-ARG APP
-ARG WRKDR
+#FROM base AS builder
+#ARG APP
+#ARG WRKDR
+#
+#WORKDIR ${WRKDR}
+#
+#COPY --from=pruner ${WRKDR}/out/full/ .
+#COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
+#COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils
+#COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/adapter
+#COPY --from=pruner ${WRKDR}/out/package-lock.json .
+#
+#RUN npm i -g turbo \
+##    && npm pkg delete scripts.prepare \
+#    && npm ci
 
-WORKDIR ${WRKDR}
-
-COPY --from=pruner ${WRKDR}/out/full/ .
-COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
-COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils
-COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/adapter
-COPY --from=pruner ${WRKDR}/out/package-lock.json .
-
-RUN npm i -g turbo \
-#    && npm pkg delete scripts.prepare \
-    && npm ci
-
-RUN turbo run build --filter=@ucp-npm/mx-adapter
-
+#RUN turbo run build --filter=@ucp-npm/mx-adapter
+#
 #FROM base AS runner
 #ARG APP
 #ARG WRKDR
@@ -54,6 +54,6 @@ RUN turbo run build --filter=@ucp-npm/mx-adapter
 #COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
 #
 #EXPOSE ${PORT}
-
+#
 #CMD ["ts-node", "./src/server.js"]
-CMD ["sh", "-c", "pwd"]
+CMD ["sleep", "infinity"]
