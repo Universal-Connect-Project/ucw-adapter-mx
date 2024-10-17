@@ -74,7 +74,7 @@ jobs:
           docker compose pull --ignore-buildable --quiet
 
       - name: "Build docker images"
-        working-directory: ${GITHUB_WORKSPACE}
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
         run: |
           docker compose up --build --wait --detach
 
