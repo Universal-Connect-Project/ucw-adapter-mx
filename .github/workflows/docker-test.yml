@@ -77,10 +77,6 @@ jobs:
         run: |
           WRKDR=${{ env.GITHUB_WORKSPACE }} docker compose up --build --wait --detach
 
-      - name: Setup tmate.io session on failure
-        if: failure() || success()
-        uses: mxschmitt/action-tmate@v3
-
       - name: "Check if build passed"
         run: |
           BUILD_CHECK=$(docker logs ucw-app-server 2>&1 | grep "App initialized successfully")
@@ -106,3 +102,7 @@ jobs:
             
             exit 1
           fi
+
+      - name: Setup tmate.io session on failure
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
