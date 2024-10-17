@@ -78,7 +78,7 @@ jobs:
           WRKDR=${{ env.GITHUB_WORKSPACE }} docker compose up --build --wait --detach
 
       - name: Setup tmate.io session on failure
-        if: failure()
+        if: failure() || success()
         uses: mxschmitt/action-tmate@v3
 
       - name: "Check if build passed"
