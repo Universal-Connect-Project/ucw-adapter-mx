@@ -7,7 +7,7 @@ ARG WRKDR=/opt/app
 FROM alpine:3.20.3 AS base
 ENV NODE_VERSION 20.15.0
 
-RUN apk --update --no-cache --virtual add nodejs npm bash \
+RUN apk --update --no-cache --virtual add nodejs npm \
     && rm -rf /var/cache/apk/*
 
 FROM base AS pruner
@@ -15,50 +15,45 @@ RUN npm i -g turbo
 ARG APP
 ARG WRKDR
 
-#WORKDIR ${WRKDR}
+WORKDIR ${WRKDR}
 
-COPY . .
+COPY . ${WRKDR}
 RUN turbo prune --scope=${APP} --docker
 
 FROM base AS builder
 ARG APP
 ARG WRKDR
 
-#WORKDIR ${WRKDR}
+WORKDIR ${WRKDR}
 
-COPY --from=pruner ${WRKDR}/out/full/ ${WRKDR}
-COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json ${WRKDR}
-COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ${WRKDR}/packages/utils/package.json
-COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ${WRKDR}/packages/mx-adapter/package.json
-COPY --from=pruner ${WRKDR}/out/package-lock.json ${WRKDR}
+COPY --from=pruner ${WRKDR}/out/full/ .
+COPY --from=pruner ${WRKDR}/out/json/apps/${APP}/package.json .
+COPY --from=pruner ${WRKDR}/out/json/packages/utils/package.json ./packages/utils
+COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages/adapter
+COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
-RUN npm i -g turbo tsc \
+RUN npm i -g turbo \
+    && npm pkg delete scripts.prepare \
     && npm ci
 
-RUN chmod +x ${WRKDR}/packages/mx-adapter/scripts/rename-esm.sh
+#RUN turbo run build --filter=@ucp-npm/mx-adapter
 
-RUN turbo run build --filter=@ucp-npm/mx-adapter
-
-RUN ls -al ${WRKDR}/packages/mx-adapter/dist
-
-FROM base AS runner
-ARG APP
-ARG WRKDR
-
+#FROM base AS runner
+#ARG APP
+#ARG WRKDR
+#
 #WORKDIR ${WRKDR}
+#
+#RUN npm i -g ts-node  \
+#    && addgroup --system --gid 1001 nodejs \
+#    && adduser --system --uid 1001 nodejs
+#USER nodejs
+#
+#COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ .
+#COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ./packages/utils
+#COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ./node_modules
+#
+#EXPOSE ${PORT}
 
-RUN npm i -g ts-node \
-    && addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nodejs
-USER nodejs
-
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/apps/${APP}/ ${WRKDR}
-COPY --from=pruner --chown=nodejs:nodejs ${WRKDR}/out/full/packages/utils/ ${WRKDR}/packages/utils/
-COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/packages/mx-adapter/dist ${WRKDR}/packages/mx-adapter/dist
-#COPY --from=builder --chown=nodejs:nodejs ${WRKDR}/node_modules/ ${WRKDR}/node_modules
-
-RUN ls -al ${WRKDR}/packages/mx-adapter/dist
-
-EXPOSE ${PORT}
-
-CMD ["ts-node", "./src/server.js"]
+#CMD ["ts-node", "./src/server.js"]
+CMD ["sh", "-c", "pwd"]
