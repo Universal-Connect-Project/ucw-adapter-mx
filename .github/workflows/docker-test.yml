@@ -74,9 +74,8 @@ jobs:
           docker compose pull --ignore-buildable --quiet
 
       - name: "Build docker images"
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
         run: |
-          docker compose up --build --wait --detach
+          WRKDR=${{ env.GITHUB_WORKSPACE }} docker compose up --build --wait --detach
 
       - name: Setup tmate.io session on failure
         if: failure()

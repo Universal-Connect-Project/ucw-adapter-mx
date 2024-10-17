@@ -33,10 +33,10 @@ COPY --from=pruner ${WRKDR}/out/json/packages/mx-adapter/package.json ./packages
 COPY --from=pruner ${WRKDR}/out/package-lock.json .
 
 RUN npm i -g turbo \
-    && npm pkg delete scripts.prepare \
+#    && npm pkg delete scripts.prepare \
     && npm ci
 
-#RUN turbo run build --filter=@ucp-npm/mx-adapter
+RUN turbo run build --filter=@ucp-npm/mx-adapter
 
 #FROM base AS runner
 #ARG APP
