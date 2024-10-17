@@ -34,7 +34,6 @@ services:
     env_file:
       - ./apps/server/.env
     environment:
-      - WRKDR=$WRKDR
       - ELASTIC_SEARCH_URL=http://ucw-app-elasticsearch:9200
       - ResourcePrefix=http://ui:5173
       - RedisServer=redis://cache:6379
