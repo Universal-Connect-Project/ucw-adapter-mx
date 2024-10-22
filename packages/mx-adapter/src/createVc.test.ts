@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import type { AdapterDependencies } from "./models";
-import { logClient } from "./__mocks__/logClient";
+import { logClient } from "./test/utils/logClient";
 import { aggregatorCredentials, cacheClient } from "./adapter.test";
 import { VCDataTypes } from "./contract";
 import { createMxIntGetVC, createMxProdGetVC } from "./createVc";
