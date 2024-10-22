@@ -20,7 +20,9 @@ jobs:
 
       - name: 'Check if version is published'
         run: |
-          package_version=$(npm pkg get version --workspace packages/mx-adapter | tr -d \")
+          cd ./packages/mx-adapter
+          
+          package_version=$(npm pkg get version --workspaces=false | tr -d \")
           echo "VERSION=$package_version" >> $GITHUB_ENV
           
           npm_versions=$(npm view @ucp-npm/mx-adapter versions)
