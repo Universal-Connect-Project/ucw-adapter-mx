@@ -19,6 +19,7 @@ module.exports = {
     "playwright/**/*",
     "__mocks__/",
     "*.test.*",
+    "**/test/**"
   ],
   rules: {
     "@typescript-eslint/no-explicit-any": "off",
