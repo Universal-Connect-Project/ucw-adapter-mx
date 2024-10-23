@@ -2,7 +2,6 @@
   "watch": [
     "./src"
   ],
-  "delay": 2000,
   "ext": "ts",
   "ignore": ["./cypress/**", "./playwright/**", "./scripts/**"],
   "exec": "npm run build"
