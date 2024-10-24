@@ -43,15 +43,25 @@ export const adapterMap = {
     },
     logClient: logger,
     aggregatorCredentials: {
-      mxInt: aggregatorCredentials.mxInt,
-      mxProd: aggregatorCredentials.mxProd,
+      mxInt: {
+        username: config.MxClientId,
+        password: config.MxApiSecret,
+        basePath: 'https://int-api.mx.com',
+        vcEndpoint: 'https://int-api.mx.com/',
+        aggregator: 'mx_int',
+        available: true
+      },
+      mxProd: {
+        username: config.MxClientIdProd,
+        password: config.MxApiSecretProd,
+        basePath: 'https://api.mx.com',
+        vcEndpoint: 'https://api.mx.com/',
+        aggregator: 'mx',
+        available: true
+      },
     },
     envConfig: {
-      HOSTURL: config.HOST_URL,
-      MXCLIENTID: config.MXCLIENTID,
-      MXAPISECRET: config.MXAPISECRET,
-      MXCLIENTIDPROD: config.MXCLIENTIDPROD,
-      MXAPISECRETPROD: config.MXAPISECRETPROD,
+      HOSTURL: config.HOSTURL
     },
   }),
   ...testAdapterMapObject,
