@@ -1,9 +1,11 @@
 name: 'Auto-publish NPM Package'
 
-on:
-  push:
-    branches:
-      - main
+on: pull_request
+
+#on:
+#  push:
+#    branches:
+#      - main
 
 jobs:
   push_to_registry:
@@ -26,8 +28,14 @@ jobs:
           npm ci
           npm run build --workspace packages/mx-adapter
 
-      - name: 'Publish to NPM'
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          package: './packages/mx-adapter/package.json'
-          token: ${{ secrets.NPM_TOKEN }}
+          echo "$(pwd)"
+
+          # Remove test files/folders so they aren't published to NPM
+          RUN find . -name "*.test.*" -delete
+          RUN find . -name "test" -type d -delete
+
+#      - name: 'Publish to NPM'
+#        uses: JS-DevTools/npm-publish@v3
+#        with:
+#          package: './packages/mx-adapter/package.json'
+#          token: ${{ secrets.NPM_TOKEN }}
