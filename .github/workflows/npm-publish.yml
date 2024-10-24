@@ -33,6 +33,8 @@ jobs:
           # Remove test files/folders so they aren't published to NPM
           find ./packages/mx-adapter/dist -name "*.test.*" -delete
           find ./packages/mx-adapter/dist -name "test" -type d  | xargs rm -rf;
+          
+          ls ./packages/mx-adapter/dist/esm -al
 
 #      - name: 'Publish to NPM'
 #        uses: JS-DevTools/npm-publish@v3
