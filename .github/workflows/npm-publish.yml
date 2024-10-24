@@ -23,7 +23,7 @@ jobs:
 
       - name: 'Dependencies and tests'
         run: |
-          # NOTE: Change this to the directory where your package is
+          # NOTE: Change this to the directory where your package lives
           PACKAGE_DIR=packages/mx-adapter
           
           npm ci

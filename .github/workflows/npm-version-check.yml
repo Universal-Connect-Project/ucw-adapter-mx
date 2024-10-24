@@ -20,7 +20,7 @@ jobs:
 
       - name: 'Check if version is published'
         run: |
-          # NOTE: Change this to the directory where your package is
+          # NOTE: Change this to the directory where your package lives
           PACKAGE_DIR=packages/mx-adapter
           # NOTE: Change this to the name of your package on NPMJS.com
           NPM_PACKAGE_NAME=@ucp-npm/mx-adapter
