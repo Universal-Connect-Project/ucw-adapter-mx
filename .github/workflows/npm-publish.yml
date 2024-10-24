@@ -35,6 +35,8 @@ jobs:
           find ./packages/mx-adapter/dist -name "test" -type d  | xargs rm -rf;
           
           ls ./packages/mx-adapter/dist/esm -al
+          ls ./packages/mx-adapter/dist/cjs -al
+          ls ./packages/mx-adapter/dist/types -al
 
 #      - name: 'Publish to NPM'
 #        uses: JS-DevTools/npm-publish@v3
