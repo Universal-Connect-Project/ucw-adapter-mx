@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # NOTE: Change this to the directory where your package lives
-      PACKAGE_DIR: packages/mx-adapter
+      PACKAGE_DIR: 'packages/mx-adapter'
       # NOTE: Change this to the name of your package on NPMJS.com
-      NPM_PACKAGE_NAME: @ucp-npm/mx-adapter
+      NPM_PACKAGE_NAME: '@ucp-npm/mx-adapter'
 
     steps:
       - name: 'Check out the repo'
