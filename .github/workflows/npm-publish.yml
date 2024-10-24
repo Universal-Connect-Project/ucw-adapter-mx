@@ -25,18 +25,15 @@ jobs:
 
       - name: 'Dependencies and tests'
         run: |
+          # NOTE: Change this to the directory where your package is
+          PACKAGE_DIR=packages/mx-adapter
+          
           npm ci
           npm run build --workspace packages/mx-adapter
 
-          echo "$(pwd)"
-
           # Remove test files/folders so they aren't published to NPM
-          find ./packages/mx-adapter/dist -name "*.test.*" -delete
-          find ./packages/mx-adapter/dist -name "test" -type d  | xargs rm -rf;
-          
-          ls ./packages/mx-adapter/dist/esm -al
-          ls ./packages/mx-adapter/dist/cjs -al
-          ls ./packages/mx-adapter/dist/types -al
+          find ./${PACKAGE_DIR}/dist -name "*.test.*" -delete
+          find ./${PACKAGE_DIR}/dist -name "test" -type d  | xargs rm -rf;
 
 #      - name: 'Publish to NPM'
 #        uses: JS-DevTools/npm-publish@v3
