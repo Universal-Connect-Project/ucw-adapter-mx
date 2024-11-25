@@ -147,7 +147,6 @@ export class MxAdapter implements WidgetAdapter {
         await this.apiClient.deleteMember(existing?.guid || "", userId || "");
       }
     } catch (e) {
-      console.log("---------------------------> error", e);
       this.logClient.error(e);
     }
     // let res = await this.apiClient.listInstitutionCredentials(entityId)
