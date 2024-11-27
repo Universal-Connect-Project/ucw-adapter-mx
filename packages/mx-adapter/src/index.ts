@@ -29,20 +29,20 @@ export const getMxAdapterMapObject = (dependencies: AdapterDependencies) => {
 
   return {
     mx: {
-      dataAdapter: createMxProdDataAdapter(depsInt),
+      dataAdapter: createMxProdDataAdapter(depsProd),
       testInstitutionAdapterName: "mx_int",
-      vcAdapter: createMxProdGetVC(depsInt),
+      vcAdapter: createMxProdGetVC(depsProd),
       widgetAdapter: new MxAdapter({
         int: false,
-        dependencies: depsInt,
+        dependencies: depsProd,
       }),
     } as AdapterMap,
     mx_int: {
-      dataAdapter: createMxIntDataAdapter(depsProd),
-      vcAdapter: createMxIntGetVC(depsProd),
+      dataAdapter: createMxIntDataAdapter(depsInt),
+      vcAdapter: createMxIntGetVC(depsInt),
       widgetAdapter: new MxAdapter({
         int: true,
-        dependencies: depsProd,
+        dependencies: depsInt,
       }),
     } as AdapterMap,
   } as Record<string, AdapterMap>;
