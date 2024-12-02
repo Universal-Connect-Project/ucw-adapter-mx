@@ -5,44 +5,22 @@ import type { AdapterDependencies } from "./models";
 import { createMxIntDataAdapter, createMxProdDataAdapter } from "./dataAdapter";
 
 export const getMxAdapterMapObject = (dependencies: AdapterDependencies) => {
-  const depsInt = {
-    ...dependencies,
-    aggregatorCredentials: {
-      mxInt: {
-        ...dependencies.aggregatorCredentials.mxInt,
-        basePath: "https://int-api.mx.com",
-        vcEndpoint: "https://int-api.mx.com/",
-      },
-    },
-  };
-
-  const depsProd = {
-    ...dependencies,
-    aggregatorCredentials: {
-      mxProd: {
-        ...dependencies.aggregatorCredentials.mxProd,
-        basePath: "https://api.mx.com",
-        vcEndpoint: "https://api.mx.com/",
-      },
-    },
-  };
-
   return {
     mx: {
-      dataAdapter: createMxProdDataAdapter(depsProd),
+      dataAdapter: createMxProdDataAdapter(dependencies),
       testInstitutionAdapterName: "mx_int",
-      vcAdapter: createMxProdGetVC(depsProd),
+      vcAdapter: createMxProdGetVC(dependencies),
       widgetAdapter: new MxAdapter({
         int: false,
-        dependencies: depsProd,
+        dependencies: dependencies,
       }),
     } as AdapterMap,
     mx_int: {
-      dataAdapter: createMxIntDataAdapter(depsInt),
-      vcAdapter: createMxIntGetVC(depsInt),
+      dataAdapter: createMxIntDataAdapter(dependencies),
+      vcAdapter: createMxIntGetVC(dependencies),
       widgetAdapter: new MxAdapter({
         int: true,
-        dependencies: depsInt,
+        dependencies: dependencies,
       }),
     } as AdapterMap,
   } as Record<string, AdapterMap>;
