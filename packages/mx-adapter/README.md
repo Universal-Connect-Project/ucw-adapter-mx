@@ -66,7 +66,7 @@ The `logClient` and `cacheClient` dependencies are provided by the Universal Con
 
 ## Published NPM Package
 
-https://www.npmjs.com/package/@ucp-npm/sophtron-adapter
+https://www.npmjs.com/package/@ucp-npm/mx-adapter
 
 ## More Info
 
