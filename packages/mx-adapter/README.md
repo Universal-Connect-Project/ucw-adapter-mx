@@ -19,13 +19,13 @@ Once you have the npm package installed, you can set up the ucw to use it.
 
 In the `./apps/server/adapterSetup.ts` file, do the following:
 
-Import the `adapterMapObject` for MX:
+Import `getMxAdapterMapObject` from the MX adapter package:
 
 ```typescript
 import { getMxAdapterMapObject } from "@ucp-npm/mx-adapter";
 ```
 
-Import the logger:
+Import the logger and cache client (redis) dependencies:
 
 ```typescript
 import * as logger from "./infra/logger";
