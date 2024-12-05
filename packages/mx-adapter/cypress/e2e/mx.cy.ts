@@ -36,7 +36,7 @@ describe("mx aggregator", () => {
     const jobType = JobTypes.AGGREGATE;
     const userId = Cypress.env("userId");
 
-    visitWithPostMessageSpy(`/?job_type=${jobType}&user_id=${userId}`)
+    visitWithPostMessageSpy(`/widget?job_type=${jobType}&user_id=${userId}`)
       .then(() => makeAConnection(jobType))
       .then(() => {
         cy.get("@postMessage", { timeout: 90000 }).then((mySpy) => {
