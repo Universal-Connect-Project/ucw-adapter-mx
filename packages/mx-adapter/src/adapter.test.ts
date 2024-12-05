@@ -44,6 +44,8 @@ import { logClient } from "./test/utils/logClient";
 
 const cacheClient = createCacheClient();
 
+const HOSTURL = "test";
+
 const mxAdapterInt = new MxAdapter({
   int: true,
   dependencies: {
@@ -51,7 +53,7 @@ const mxAdapterInt = new MxAdapter({
     logClient,
     aggregatorCredentials,
     envConfig: {
-      HOSTURL: undefined,
+      HOSTURL,
     },
   },
 });
@@ -63,13 +65,13 @@ const mxAdapter = new MxAdapter({
     logClient,
     aggregatorCredentials,
     envConfig: {
-      HOSTURL: undefined,
+      HOSTURL,
     },
   },
 });
 const routeHandlers = mxAdapter.RouteHandlers;
 const institutionResponse = institutionData.institution;
-const clientRedirectUrl = `${process.env.HOSTURL}/oauth_redirect`;
+const clientRedirectUrl = `${HOSTURL}/oauth_redirect`;
 
 const testCredential = {
   id: "testCredentialId",
