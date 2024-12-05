@@ -1,5 +1,4 @@
 import { getMxAdapterMapObject } from "@ucp-npm/mx-adapter";
-import { getSophtronAdapterMapObject } from "@ucp-npm/sophtron-adapter";
 import type { AdapterMap } from "@repo/utils";
 
 import config from "./config";
@@ -11,18 +10,6 @@ import { getTemplateAdapterMapObject } from "@ucp-npm/template-adapter";
 
 const templateAdapterMapObject = getTemplateAdapterMapObject();
 
-const sophtronAdapterMapObject: Record<string, AdapterMap> =
-  getSophtronAdapterMapObject({
-    logClient: logger,
-    aggregatorCredentials: {
-      clientId: config.SophtronApiUserId,
-      secret: config.SophtronApiUserSecret,
-    },
-    envConfig: {
-      HOSTURL: config.HOSTURL,
-    },
-  });
-
 const mxAdapterMapObject = getMxAdapterMapObject({
   cacheClient: {
     set: set,
@@ -31,24 +18,23 @@ const mxAdapterMapObject = getMxAdapterMapObject({
   logClient: logger,
   aggregatorCredentials: {
     mxInt: {
-      username: config.MxClientId,
-      password: config.MxApiSecret,
+      username: config.MX_CLIENT_ID,
+      password: config.MX_API_SECRET,
     },
     mxProd: {
-      username: config.MxClientIdProd,
-      password: config.MxApiSecretProd,
+      username: config.MX_CLIENT_ID_PROD,
+      password: config.MX_API_SECRET_PROD,
     },
   },
   envConfig: {
-    HOSTURL: config.HOSTURL,
+    HOSTURL: config.HOST_URL,
   },
 });
 
 // This is where you add adapters
 export const adapterMap: Record<string, AdapterMap> = {
-  ...templateAdapterMapObject,
   ...mxAdapterMapObject,
-  ...sophtronAdapterMapObject,
+  ...templateAdapterMapObject,
   ...testAdapterMapObject,
 };
 
