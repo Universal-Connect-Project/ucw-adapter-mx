@@ -39,7 +39,8 @@ export default defineConfig({
   webServer: {
     command: "npm run dev:e2e",
     cwd: "../../",
-    url: "http://localhost:8080",
+    port: process.env.PORT,
     reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
   },
 });
