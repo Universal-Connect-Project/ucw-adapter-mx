@@ -36,7 +36,6 @@
     "@types/uuid": "^9.0.8",
     "@ucp-npm/mx-adapter": "*",
     "@ucp-npm/template-adapter": "*",
-    "@ucp-npm/sophtron-adapter": "^0.0.1-alpha",
     "assert-browserify": "^2.0.0",
     "axios": "^1.6.8",
     "buffer-browserify": "^0.2.5",

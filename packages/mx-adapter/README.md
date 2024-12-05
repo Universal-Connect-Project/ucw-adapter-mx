@@ -1,6 +1,6 @@
 # MX Adapter for the UCW
 
-[![npm version](https://badge.fury.io/js/@ucp-npm%2Fmx-adapter.svg)](https://badge.fury.io/js/@ucp-npm%2Fsophtron-adapter)
+[![npm version](https://badge.fury.io/js/@ucp-npm%2Fmx-adapter.svg)](https://badge.fury.io/js/@ucp-npm%2Fmx-adapter)
 
 This is the adapter that makes it possible to connect with MX via the Universal Connect Widget.
 
