@@ -37,7 +37,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev:e2e",
+    command: "npm run start:e2e",
     cwd: "../../",
     url: "http://localhost:8080",
     reuseExistingServer: !process.env.CI,
