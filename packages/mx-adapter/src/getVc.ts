@@ -1,6 +1,6 @@
-import get from "axios";
+import axios from "mx-platform-node/node_modules/axios";
 
-import { basePathProd, basePathInt } from "./consts";
+import { basePathInt, basePathProd } from "./consts";
 import type { VCDependencies } from "./models";
 
 export const getVC = async (
@@ -8,7 +8,7 @@ export const getVC = async (
   isProd: boolean,
   dependencies: VCDependencies,
 ): Promise<any> => {
-  const { logClient, aggregatorCredentials } = dependencies;
+  const { logClient, aggregatorCredentials, envConfig } = dependencies;
 
   const configuration = isProd
     ? aggregatorCredentials.mxProd
@@ -22,7 +22,20 @@ export const getVC = async (
 
   const url = `${isProd ? basePathProd : basePathInt}/vc/${path}`;
 
-  return get({
+  const axiosConfigured = dependencies?.envConfig.PROXY_HOST
+    ? axios.create({
+        proxy: {
+          host: envConfig.PROXY_HOST,
+          port: parseInt(envConfig.PROXY_PORT),
+          auth: {
+            username: envConfig.PROXY_USERNAME,
+            password: envConfig.PROXY_PASSWORD,
+          },
+        },
+      })
+    : axios;
+
+  return axiosConfigured({
     url,
     headers: {
       Accept: "application/vnd.mx.api.v1beta+json",

@@ -2,11 +2,6 @@ import axios from "mx-platform-node/node_modules/axios";
 import { MxProdApiClient } from "./apiClient";
 import type { ApiCredentials } from "./models";
 
-jest.mock("mx-platform-node", () => ({
-  MxPlatformApiFactory: jest.fn(),
-  Configuration: jest.fn(),
-}));
-
 describe("MxProdApiClient", () => {
   const mockAggregatorCredentials: ApiCredentials = {
     clientId: "test-client-id",
@@ -14,10 +9,10 @@ describe("MxProdApiClient", () => {
   };
 
   const mockEnvConfigWithProxy = {
-    PROXY_HOST: "velodrome.usefixie.com",
+    PROXY_HOST: "fakehost.server.com",
     PROXY_PORT: "80",
-    PROXY_USERNAME: "fixie",
-    PROXY_PASSWORD: "DB4ERlidGtqEU51",
+    PROXY_USERNAME: "username",
+    PROXY_PASSWORD: "password",
   };
 
   const mockEnvConfigWithoutProxy = {};
