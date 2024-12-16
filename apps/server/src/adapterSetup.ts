@@ -1,12 +1,12 @@
 import type { AdapterMap } from "@repo/utils";
 
 import config from "./config";
-import { get, set } from "./services/storageClient/redis";
 import * as logger from "./infra/logger";
+import { get, set } from "./services/storageClient/redis";
 
-import { adapterMapObject as testAdapterMapObject } from "./test-adapter";
-import { getTemplateAdapterMapObject } from "@ucp-npm/template-adapter";
 import { getMxAdapterMapObject } from "@ucp-npm/mx-adapter";
+import { getTemplateAdapterMapObject } from "@ucp-npm/template-adapter";
+import { adapterMapObject as testAdapterMapObject } from "./test-adapter";
 
 const templateAdapterMapObject = getTemplateAdapterMapObject();
 
@@ -28,6 +28,10 @@ const mxAdapterMapObject = getMxAdapterMapObject({
   },
   envConfig: {
     HOSTURL: config.HOST_URL,
+    PROXY_HOST: config.PROXY_HOST,
+    PROXY_PORT: config.PROXY_PORT,
+    PROXY_USERNAME: config.PROXY_USERNAME,
+    PROXY_PASSWORD: config.PROXY_PASSWORD,
   },
 });
 
@@ -37,6 +41,5 @@ export const adapterMap: Record<string, AdapterMap> = {
   ...templateAdapterMapObject,
   ...testAdapterMapObject,
 };
-
 export type Aggregator = keyof typeof adapterMap;
 export const aggregators = Object.keys(adapterMap);
