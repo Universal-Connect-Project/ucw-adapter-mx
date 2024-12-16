@@ -68,6 +68,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DELETE_USER_ENDPOINT_ENABLE: true
         with:
           config-file: cypress.config.ts
           project: packages/mx-adapter
