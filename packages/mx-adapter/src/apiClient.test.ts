@@ -35,8 +35,6 @@ describe("MxProdApiClient", () => {
         },
       },
     });
-
-    axiosCreateSpy.mockRestore();
   });
 
   it("creates an API client without proxy configuration when PROXY_HOST is not defined", () => {
@@ -48,7 +46,5 @@ describe("MxProdApiClient", () => {
     });
 
     expect(axiosCreateSpy).not.toHaveBeenCalled();
-
-    axiosCreateSpy.mockRestore();
   });
 });
