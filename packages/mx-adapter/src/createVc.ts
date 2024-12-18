@@ -13,7 +13,7 @@ const createMXGetVC =
   (isProd: boolean, dependencies: VCDependencies) =>
   async ({ connectionId, type, userId, accountId }: DataParameters) => {
     let path = "";
-    const { logClient, aggregatorCredentials } = dependencies;
+    const { logClient, aggregatorCredentials, envConfig } = dependencies;
 
     switch (type) {
       case VCDataTypes.IDENTITY:
@@ -34,6 +34,7 @@ const createMXGetVC =
     return await getVC(path, isProd, {
       logClient,
       aggregatorCredentials,
+      envConfig,
     });
   };
 

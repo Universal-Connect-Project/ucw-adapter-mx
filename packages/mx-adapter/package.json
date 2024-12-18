@@ -1,6 +1,6 @@
 {
   "name": "@ucp-npm/mx-adapter",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "MX Adapter for the Universal Connect Widget",
   "packageManager": "npm@10.8.2",
   "main": "dist/cjs/index.js",
@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "nodemon",
     "cypress:open": "cypress open --config-file cypress.config.ts",
+    "cypress:open:proxy": "cypress open --config-file cypress.config.proxy.ts",
     "cypress:run": "cypress run --config-file cypress.config.ts",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",

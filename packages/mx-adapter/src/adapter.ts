@@ -83,7 +83,10 @@ export class MxAdapter implements WidgetAdapter {
     this.aggregator = int ? "mx_int" : "mx";
     this.apiClient = int
       ? MxIntApiClient(dependencies?.aggregatorCredentials.mxInt)
-      : MxProdApiClient(dependencies?.aggregatorCredentials.mxProd);
+      : MxProdApiClient({
+          aggregatorCredentials: dependencies?.aggregatorCredentials.mxProd,
+          envConfig: dependencies?.envConfig,
+        });
     this.cacheClient = dependencies?.cacheClient;
     this.logClient = dependencies?.logClient;
     this.envConfig = dependencies?.envConfig;

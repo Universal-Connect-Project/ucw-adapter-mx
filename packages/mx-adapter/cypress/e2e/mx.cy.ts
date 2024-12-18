@@ -1,24 +1,14 @@
 import { JobTypes } from "@repo/utils";
 import {
-  clickContinue,
-  expectConnectionSuccess,
   generateDataTests,
   refreshAConnection,
   visitWithPostMessageSpy,
 } from "@repo/utils-dev-dependency";
-import { enterMxCredentials, searchAndSelectMx } from "../utils/mx";
-
-const makeAConnection = async (jobType) => {
-  searchAndSelectMx();
-  enterMxCredentials();
-  clickContinue();
-
-  if ([JobTypes.ALL, JobTypes.VERIFICATION].includes(jobType)) {
-    cy.findByText("Checking").click();
-    clickContinue();
-  }
-  expectConnectionSuccess();
-};
+import {
+  enterMxCredentials,
+  makeAConnection,
+  searchAndSelectMx,
+} from "../utils/mx";
 
 describe("mx aggregator", () => {
   generateDataTests({ makeAConnection, shouldTestVcEndpoint: true });
