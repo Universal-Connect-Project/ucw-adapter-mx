@@ -68,6 +68,8 @@ jobs:
           echo DELETE_USER_ENDPOINT_ENABLE=true >> ${ENV_FILE_PATH}
           echo PROXY_USERNAME=${{ secrets.PROXY_USERNAME }} >> ${ENV_FILE_PATH}
           echo PROXY_PASSWORD=${{ secrets.PROXY_PASSWORD }} >> ${ENV_FILE_PATH}
+          echo PROXY_HOST=velodrome.usefixie.com >> ${ENV_FILE_PATH}
+          echo PROXY_PORT=80 >> ${ENV_FILE_PATH}
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
