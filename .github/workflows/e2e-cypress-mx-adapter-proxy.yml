@@ -1,4 +1,4 @@
-name: E2E Tests (MX Adapter)
+name: Proxy Server E2E Tests (MX Adapter)
 
 on: pull_request
 
@@ -74,11 +74,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          config-file: cypress.config.ts
+          config-file: cypress.config.proxy.ts
           project: packages/mx-adapter
           start: npm run start:e2e
           wait-on: "http://localhost:8080/health, http://localhost:9200"
-          spec: cypress/e2e/proxy/axiosProxy.cy.ts
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
