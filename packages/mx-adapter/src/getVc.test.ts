@@ -105,8 +105,7 @@ describe("mx vc", () => {
 
       const response = await getVC(accountsPath, false, dependencies);
 
-      await getVC(accountsPath, true, dependencies),
-        expect(axiosCreateSpy).not.toHaveBeenCalled();
+      expect(axiosCreateSpy).not.toHaveBeenCalled();
 
       expect(response).toEqual(mxVcAccountsData);
     });
