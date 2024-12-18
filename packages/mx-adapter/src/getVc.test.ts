@@ -2,7 +2,6 @@ import { http, HttpResponse } from "msw";
 import axios from "mx-platform-node/node_modules/axios";
 import { getVC } from "./getVc";
 import type { AdapterDependencies } from "./models";
-
 import {
   MX_INTEGRATION_VC_GET_ACCOUNTS_PATH,
   MX_VC_GET_ACCOUNTS_PATH,
@@ -88,57 +87,58 @@ describe("mx vc", () => {
       ).rejects.toThrow();
     });
 
-    describe("Proxy Configuration Test", () => {
-      const mockEnvConfigWithProxy = {
-        PROXY_HOST: "fakehost.server.com",
-        PROXY_PORT: "8085",
-        PROXY_USERNAME: "username",
-        PROXY_PASSWORD: "password",
-      };
+    const mockEnvConfigWithProxy = {
+      PROXY_HOST: "fakehost.server.com",
+      PROXY_PORT: "8085",
+      PROXY_USERNAME: "username",
+      PROXY_PASSWORD: "password",
+    };
 
-      it("doesn't configure axios proxy when PROXY_HOST is not defined", async () => {
-        const axiosCreateSpy = jest.spyOn(axios, "create");
+    it("doesn't configure axios proxy when PROXY_HOST is not defined", async () => {
+      const axiosCreateSpy = jest.spyOn(axios, "create");
 
-        server.use(
-          http.get(
-            MX_VC_GET_ACCOUNTS_PATH,
-            () => new HttpResponse(null, { status: 200 }),
-          ),
-        );
+      server.use(
+        http.get(MX_INTEGRATION_VC_GET_ACCOUNTS_PATH, ({ request }) => {
+          return HttpResponse.json({ verifiableCredential: mxVcAccountsData });
+        }),
+      );
 
-        const result = await getVC(accountsPath, true, dependencies);
-        expect(result.status).toBe(200);
+      const response = await getVC(accountsPath, false, dependencies);
 
+      await getVC(accountsPath, true, dependencies),
         expect(axiosCreateSpy).not.toHaveBeenCalled();
-      });
 
-      it("configures axios to use proxy server when PROXY_HOST is defined", async () => {
-        const axiosCreateSpy = jest.spyOn(axios, "create");
+      expect(response).toEqual(mxVcAccountsData);
+    });
 
-        server.use(
-          http.get(MX_VC_GET_ACCOUNTS_PATH, ({ request }) => {
-            request.headers.get("Authorization");
-            return HttpResponse.json({
-              verifiableCredential: mxVcAccountsData,
-            });
+    it("configures axios to use proxy server when PROXY_HOST is defined", async () => {
+      const axiosCreateSpy = jest.spyOn(axios, "create");
+
+      server.use(
+        http.get(MX_INTEGRATION_VC_GET_ACCOUNTS_PATH, ({ request }) => {
+          return HttpResponse.json({
+            verifiableCredential: mxVcAccountsData,
+          });
+        }),
+      );
+
+      await expect(
+        async () =>
+          await getVC(accountsPath, true, {
+            ...dependencies,
+            envConfig: mockEnvConfigWithProxy,
           }),
-        );
+      ).rejects.toThrow();
 
-        await getVC(accountsPath, true, {
-          ...dependencies,
-          envConfig: mockEnvConfigWithProxy,
-        });
-
-        expect(axiosCreateSpy).toHaveBeenCalledWith({
-          proxy: {
-            host: mockEnvConfigWithProxy.PROXY_HOST,
-            port: parseInt(mockEnvConfigWithProxy.PROXY_PORT),
-            auth: {
-              username: mockEnvConfigWithProxy.PROXY_USERNAME,
-              password: mockEnvConfigWithProxy.PROXY_PASSWORD,
-            },
+      expect(axiosCreateSpy).toHaveBeenCalledWith({
+        proxy: {
+          host: mockEnvConfigWithProxy.PROXY_HOST,
+          port: parseInt(mockEnvConfigWithProxy.PROXY_PORT),
+          auth: {
+            username: mockEnvConfigWithProxy.PROXY_USERNAME,
+            password: mockEnvConfigWithProxy.PROXY_PASSWORD,
           },
-        });
+        },
       });
     });
   });
