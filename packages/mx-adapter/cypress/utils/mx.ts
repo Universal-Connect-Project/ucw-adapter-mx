@@ -12,8 +12,8 @@ export const searchAndSelectMx = () => {
 };
 
 export const enterMxCredentials = () => {
-  cy.findByLabelText("LOGIN").type("mxuser");
-  cy.findByLabelText("PASSWORD").type("correct");
+  cy.findByLabelText("Username").type("mxuser");
+  cy.findByLabelText("Password").type("correct");
 };
 
 export const makeAConnection = async (jobType) => {

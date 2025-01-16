@@ -29,7 +29,7 @@ const mapCredentials = (mxCreds: CredentialsResponseBody): Credential[] => {
   if (mxCreds.credentials != null) {
     return mxCreds.credentials.map((item: CredentialResponse) => ({
       id: item.guid || "",
-      label: item.field_name || "",
+      label: item.label || "",
       field_type: item.field_type || "",
       field_name: item.field_name || "",
     }));
