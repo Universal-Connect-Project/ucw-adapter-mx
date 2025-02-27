@@ -8,38 +8,6 @@ export const memberData = {
   },
 };
 
-export const verifyMemberData = {
-  ...memberData,
-  member: {
-    ...memberData.member,
-    guid: "verifyMemberGuid",
-  },
-};
-
-export const identifyMemberData = {
-  ...memberData,
-  member: {
-    ...memberData.member,
-    guid: "identifyMemberGuid",
-  },
-};
-
-export const extendHistoryMemberData = {
-  ...memberData,
-  member: {
-    ...memberData.member,
-    guid: "extendHistoryMemberGuid",
-  },
-};
-
-export const aggregateMemberMemberData = {
-  ...memberData,
-  member: {
-    ...memberData.member,
-    guid: "aggregateMemberMemberGuid",
-  },
-};
-
 export const connectionByIdMemberData = {
   ...memberData,
   member: {

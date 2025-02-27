@@ -1,40 +1,27 @@
-import { ChallengeType, ConnectionStatus } from "@repo/utils";
-import type { Response } from "express";
+import { ChallengeType, ComboJobTypes, ConnectionStatus } from "@repo/utils";
 import { http, HttpResponse } from "msw";
 
-import {
-  AGGREGATION_JOB_TYPE,
-  EXTENDED_HISTORY_NOT_SUPPORTED_MSG,
-  MxAdapter,
-} from "./adapter";
+import { MxAdapter } from "./adapter";
 
 import {
-  AGGREGATE_MEMBER_PATH,
   ANSWER_CHALLENGE_PATH,
   CREATE_MEMBER_PATH,
   CREATE_USER_PATH,
   DELETE_CONNECTION_PATH,
   DELETE_MEMBER_PATH,
-  EXTEND_HISTORY_PATH,
   MX_DELETE_USER_PATH,
   MX_INSTITUTION_BY_ID_PATH,
   READ_MEMBER_STATUS_PATH,
-  CONNECTION_BY_ID_PATH,
   UPDATE_CONNECTION_PATH,
-  VERIFY_MEMBER_PATH,
 } from "./test/handlers";
 import { institutionData } from "./test/testData/institution";
 import { institutionCredentialsData } from "./test/testData/institutionCredentials";
 import { aggregatorCredentials } from "./test/testData/aggregatorCredentials";
 import {
-  aggregateMemberMemberData,
   connectionByIdMemberData,
-  extendHistoryMemberData,
-  identifyMemberData,
   memberData,
   membersData,
   memberStatusData,
-  verifyMemberData,
 } from "./test/testData/members";
 import { createUserData, listUsersData } from "./test/testData/users";
 import { server } from "./test/testServer";
@@ -69,7 +56,7 @@ const mxAdapter = new MxAdapter({
     },
   },
 });
-const routeHandlers = mxAdapter.RouteHandlers;
+// const routeHandlers = mxAdapter.RouteHandlers;
 const institutionResponse = institutionData.institution;
 const clientRedirectUrl = `${HOSTURL}/oauth_redirect`;
 
@@ -221,6 +208,7 @@ describe("mx aggregator", () => {
         initial_job_type: "verification",
         background_aggregation_is_disabled: false,
         credentials: [testCredential],
+        jobTypes: [ComboJobTypes.TRANSACTIONS, ComboJobTypes.ACCOUNT_NUMBER],
         institution_id: "testInstitutionId",
         is_oauth: false,
         skip_aggregation: false,
@@ -294,42 +282,6 @@ describe("mx aggregator", () => {
           expect(createMemberPayload.client_redirect_url).toEqual(null);
         });
 
-        it("creates a member with skip_aggregation if requested", async () => {
-          await mxAdapter.CreateConnection(
-            {
-              ...baseConnectionRequest,
-              skip_aggregation: true,
-            },
-            "testUserId",
-          );
-
-          expect(createMemberPayload.member.skip_aggregation).toEqual(true);
-        });
-
-        it("creates a member with skip_aggregation if jobType is not aggregate", async () => {
-          await mxAdapter.CreateConnection(
-            {
-              ...baseConnectionRequest,
-              initial_job_type: "auth",
-            },
-            "testUserId",
-          );
-
-          expect(createMemberPayload.member.skip_aggregation).toEqual(true);
-        });
-
-        it("creates a member with !skip_aggregation if jobType is aggregate", async () => {
-          await mxAdapter.CreateConnection(
-            {
-              ...baseConnectionRequest,
-              initial_job_type: "aggregate",
-            },
-            "testUserId",
-          );
-
-          expect(createMemberPayload.member.skip_aggregation).toEqual(false);
-        });
-
         it("creates a member with correctly mapped request options and returns the member from that response when is_oauth", async () => {
           await mxAdapter.CreateConnection(
             {
@@ -350,57 +302,11 @@ describe("mx aggregator", () => {
               ],
               institution_code: baseConnectionRequest.institution_id,
               is_oauth: true,
-              skip_aggregation: true,
             },
+            data_request: { products: baseConnectionRequest.jobTypes },
             referral_source: "APP",
           });
         });
-      });
-
-      it("returns the member from verifyMember if job type is verification or aggregate_identity_verification", async () => {
-        const verificationMember = await mxAdapter.CreateConnection(
-          {
-            ...baseConnectionRequest,
-            initial_job_type: "verification",
-          },
-          "testUserId",
-        );
-
-        expect(verificationMember.id).toEqual(verifyMemberData.member.guid);
-
-        const aggregateMember = await mxAdapter.CreateConnection(
-          {
-            ...baseConnectionRequest,
-            initial_job_type: "aggregate_identity_verification",
-          },
-          "testUserId",
-        );
-
-        expect(aggregateMember.id).toEqual(verifyMemberData.member.guid);
-      });
-
-      it("returns the member from identifyMember if job type is aggregate_identity", async () => {
-        const member = await mxAdapter.CreateConnection(
-          {
-            ...baseConnectionRequest,
-            initial_job_type: "aggregate_identity",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(identifyMemberData.member.guid);
-      });
-
-      it("returns the member from extendHistory if job type is aggregate_extendedhistory", async () => {
-        const member = await mxAdapter.CreateConnection(
-          {
-            ...baseConnectionRequest,
-            initial_job_type: "aggregate_extendedhistory",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(extendHistoryMemberData.member.guid);
       });
     });
 
@@ -445,157 +351,6 @@ describe("mx aggregator", () => {
     });
 
     describe("UpdateConnection", () => {
-      const baseUpdateConnectionRequest = {
-        id: "testUpdateConnectionId",
-        job_type: "auth",
-        credentials: [testCredential],
-        challenges: [testChallenge],
-      };
-
-      it("returns the member from verifyMember if jobType is verification", async () => {
-        const member = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "verification",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(verifyMemberData.member.guid);
-      });
-
-      it("returns the member from identifyMember if jobType is aggregate_identity", async () => {
-        const member = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "aggregate_identity",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(identifyMemberData.member.guid);
-      });
-
-      it("returns the member from extendHistory if jobType is aggregate_extendedhistory", async () => {
-        const member = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "aggregate_extendedhistory",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(extendHistoryMemberData.member.guid);
-      });
-
-      it("returns the member from aggregateMember if jobType is agg", async () => {
-        const member = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "agg",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(aggregateMemberMemberData.member.guid);
-      });
-
-      it("returns the member from aggregateMember if extended history is not supported", async () => {
-        server.use(
-          http.post(EXTEND_HISTORY_PATH, () => {
-            return HttpResponse.json(
-              { error: { message: EXTENDED_HISTORY_NOT_SUPPORTED_MSG } },
-              { status: 400 },
-            );
-          }),
-        );
-
-        const member = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "aggregate_extendedhistory",
-          },
-          "testUserId",
-        );
-
-        expect(member.id).toEqual(aggregateMemberMemberData.member.guid);
-      });
-
-      it("returns an error message if a request fails", async () => {
-        const errorMessage = "testError";
-
-        server.use(
-          http.post(VERIFY_MEMBER_PATH, () =>
-            HttpResponse.json(
-              {
-                error: {
-                  message: errorMessage,
-                },
-              },
-              { status: 400 },
-            ),
-          ),
-        );
-
-        const error = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "verification",
-          },
-          "testUserId",
-        );
-
-        expect(error).toEqual({
-          error_message: errorMessage,
-          id: baseUpdateConnectionRequest.id,
-        });
-      });
-
-      it("returns an error message if the aggregate member request fails after extended history is not supported", async () => {
-        server.use(
-          http.post(EXTEND_HISTORY_PATH, () =>
-            HttpResponse.json(
-              {
-                error: {
-                  message: EXTENDED_HISTORY_NOT_SUPPORTED_MSG,
-                },
-              },
-              { status: 400 },
-            ),
-          ),
-        );
-
-        const errorMessage = "testError";
-
-        server.use(
-          http.post(AGGREGATE_MEMBER_PATH, () =>
-            HttpResponse.json(
-              {
-                error: {
-                  message: errorMessage,
-                },
-              },
-              { status: 400 },
-            ),
-          ),
-        );
-
-        const error = await mxAdapter.UpdateConnection(
-          {
-            ...baseUpdateConnectionRequest,
-            job_type: "aggregate_extendedhistory",
-          },
-          "testUserId",
-        );
-
-        expect(error).toEqual({
-          error_message: errorMessage,
-          id: baseUpdateConnectionRequest.id,
-        });
-      });
-    });
-
-    describe("UpdateConnectionInternal", () => {
       it("it calls updateMember with the correct request body and returns the member", async () => {
         let updateConnectionPaylod;
 
@@ -607,7 +362,7 @@ describe("mx aggregator", () => {
           }),
         );
 
-        const member = await mxAdapter.UpdateConnectionInternal(
+        const member = await mxAdapter.UpdateConnection(
           {
             id: "updateConnectionId",
             job_type: "testJobType",
@@ -899,62 +654,6 @@ describe("mx aggregator", () => {
         await expect(
           async () => await mxAdapter.ResolveUserId(userId, true),
         ).rejects.toThrow("User not resolved successfully");
-      });
-    });
-
-    describe("RouteHandlers", () => {
-      it("returns an object of handler functions", async () => {
-        const handlers: Record<string, (req: any, res: any) => Promise<void>> =
-          mxAdapter.RouteHandlers;
-        expect(Object.keys(handlers)).toHaveLength(1);
-      });
-
-      describe("jobRequestHandler", () => {
-        it("returns AGGREGATION_JOB_TYPE if member_guid is null", async () => {
-          const req = {
-            params: {
-              member_guid: "null",
-            },
-          };
-
-          const res = {
-            send: jest.fn(),
-          } as unknown as Response;
-
-          await routeHandlers.jobRequestHandler(req, res);
-
-          expect(res.send).toHaveBeenCalledWith({
-            job: {
-              guid: "none",
-              job_type: AGGREGATION_JOB_TYPE,
-            },
-          });
-        });
-
-        it("returns member status if member_guid is not null", async () => {
-          server.use(
-            http.get(CONNECTION_BY_ID_PATH, () =>
-              HttpResponse.json(memberStatusData),
-            ),
-          );
-
-          const req = {
-            connectApi: {
-              loadMemberByGuid: jest.fn().mockResolvedValue(memberStatusData),
-            },
-            params: {
-              member_guid: "memberGuid",
-            },
-          };
-
-          const res = {
-            send: jest.fn(),
-          } as unknown as Response;
-
-          await routeHandlers.jobRequestHandler(req, res);
-
-          expect(res.send).toHaveBeenCalledWith(memberStatusData);
-        });
       });
     });
   });

@@ -135,7 +135,7 @@ export class ConnectApi extends AggregatorAdapterBase {
     return { member: mapConnection(connection) };
   }
 
-  async updateMember(member: Member): Promise<MemberResponse> {
+  async updateMember(member: Member): Promise<Member> {
     if (this.context.current_job_id && member.credentials !== undefined) {
       await this.answerChallenge(
         member.guid,
@@ -174,17 +174,17 @@ export class ConnectApi extends AggregatorAdapterBase {
           return ret;
         }),
       );
-      return { member };
+      return member;
     } else {
       const connection = await this.updateConnection({
-        job_type: this.context.job_type,
+        jobTypes: this.context.jobTypes,
         id: member.guid,
         credentials: member.credentials?.map((c) => ({
           id: c.guid,
           value: c.value,
         })),
       });
-      return { member: mapConnection(connection) };
+      return mapConnection(connection);
     }
   }
 
