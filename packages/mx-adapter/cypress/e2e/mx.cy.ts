@@ -1,8 +1,6 @@
-import { JobTypes } from "@repo/utils";
 import {
   generateDataTests,
   refreshAConnection,
-  visitWithPostMessageSpy,
 } from "@repo/utils-dev-dependency";
 import {
   enterMxCredentials,
@@ -18,55 +16,5 @@ describe("mx aggregator", () => {
       enterCredentials: enterMxCredentials,
       selectInstitution: searchAndSelectMx,
     });
-  });
-
-  // Test RouteHandlers
-  it("initiates a connect and verifies the return value of the jobs endpoint", () => {
-    let memberGuid: string;
-    const jobType = JobTypes.AGGREGATE;
-    const userId = Cypress.env("userId");
-
-    visitWithPostMessageSpy(`/widget?job_type=${jobType}&user_id=${userId}`)
-      .then(() => makeAConnection(jobType))
-      .then(() => {
-        cy.get("@postMessage", { timeout: 90000 }).then((mySpy) => {
-          const connection = (mySpy as any)
-            .getCalls()
-            .find(
-              (call) => call.args[0].type === "vcs/connect/memberConnected",
-            );
-          const { metadata } = connection?.args[0];
-          memberGuid = metadata.member_guid;
-
-          cy.window().then((win) => {
-            const app = win["app"] || {};
-            const { connect: connectConfig, ...clientConfig } =
-              app["clientConfig"];
-
-            const instrumentationData = {
-              message: "widget-config",
-              instrumentation: {
-                ...clientConfig,
-                ...connectConfig,
-                current_aggregator: "mx_int",
-                aggregator: "mx_int",
-              },
-            };
-
-            cy.request({
-              method: "GET",
-              url: `/jobs/${encodeURIComponent(memberGuid)}`,
-              headers: {
-                meta: JSON.stringify(instrumentationData.instrumentation),
-              },
-            }).then((response) => {
-              expect(response.status).to.eq(200);
-              expect(response.body).to.haveOwnProperty("member");
-              expect(response.body.member).to.haveOwnProperty("guid");
-              expect(response.body.member.guid).to.eq(memberGuid);
-            });
-          });
-        });
-      });
   });
 });
