@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { ComboJobTypes } from "@repo/utils";
 
 test("connects to mx bank with oAuth", async ({ page }) => {
   test.setTimeout(240000);
@@ -6,7 +7,7 @@ test("connects to mx bank with oAuth", async ({ page }) => {
   const userId = crypto.randomUUID();
 
   await page.goto(
-    `http://localhost:8080/widget?job_type=aggregate&user_id=${userId}`,
+    `http://localhost:8080/widget?jobTypes=${ComboJobTypes.TRANSACTIONS}&user_id=${userId}`,
   );
 
   await page.getByPlaceholder("Search").fill("MX Bank (Oauth)");
@@ -15,7 +16,7 @@ test("connects to mx bank with oAuth", async ({ page }) => {
 
   const popupPromise = page.waitForEvent("popup");
 
-  await page.getByRole("link", { name: "Continue" }).click();
+  await page.getByRole("link", { name: "Go to log in" }).click();
 
   const authorizeTab = await popupPromise;
   await authorizeTab.getByRole("button", { name: "Authorize" }).click();
@@ -23,7 +24,7 @@ test("connects to mx bank with oAuth", async ({ page }) => {
     authorizeTab.getByText("Thank you for completing OAuth."),
   ).toBeVisible();
 
-  await expect(page.getByRole("button", { name: "Continue" })).toBeVisible({
+  await expect(page.getByRole("button", { name: "Done" })).toBeVisible({
     timeout: 120000,
   });
 
