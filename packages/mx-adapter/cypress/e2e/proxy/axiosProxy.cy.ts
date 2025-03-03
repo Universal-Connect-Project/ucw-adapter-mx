@@ -1,4 +1,5 @@
 import {
+  MEMBER_CONNECTED_EVENT_TYPE,
   searchByText,
   verifyAccountsAndReturnAccountId,
   visitAgg,
@@ -23,9 +24,7 @@ describe("mx aggregator using axios proxy", () => {
         cy.get("@postMessage", { timeout: 90000 }).then((mySpy) => {
           const connection = (mySpy as any)
             .getCalls()
-            .find(
-              (call) => call.args[0].type === "vcs/connect/memberConnected",
-            );
+            .find((call) => call.args[0].type === MEMBER_CONNECTED_EVENT_TYPE);
           const { metadata } = connection?.args[0];
           memberGuid = metadata.member_guid;
           aggregator = metadata.aggregator;
