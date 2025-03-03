@@ -58,25 +58,6 @@ export class MxAdapter implements WidgetAdapter {
   logClient: LogClient;
   envConfig: Record<string, string>;
 
-  // RouteHandlers = {
-  //   /**
-  //    * Handles requests to /job/{member_guid}
-  //    *
-  //    * @param req - Express request object
-  //    * @param res - Express response object
-  //    */
-  //   jobRequestHandler: async (req: any, res: any) => {
-  //     console.log(req)
-
-  //     if (req.params.member_guid === "null") {
-  //       res.send({ job: { guid: "none", job_type: AGGREGATION_JOB_TYPE } });
-  //       return;
-  //     }
-  //     const ret = await req.connectApi.loadMemberByGuid(req.params.member_guid);
-  //     res.send(ret);
-  //   },
-  // };
-
   constructor(args: AdapterConfig) {
     const { int, dependencies } = args;
     this.aggregator = int ? "mx_int" : "mx";

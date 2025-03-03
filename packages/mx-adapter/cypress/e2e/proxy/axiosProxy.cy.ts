@@ -46,6 +46,6 @@ describe("mx aggregator using axios proxy", () => {
     searchByText("Capital One");
 
     cy.findByLabelText("Add account with Capital One").first().click();
-    cy.findByText("Sign in with Capital One").should("exist");
+    cy.findByText("Log in at Capital One").should("exist");
   });
 });

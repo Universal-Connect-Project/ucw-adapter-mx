@@ -56,7 +56,7 @@ const mxAdapter = new MxAdapter({
     },
   },
 });
-// const routeHandlers = mxAdapter.RouteHandlers;
+
 const institutionResponse = institutionData.institution;
 const clientRedirectUrl = `${HOSTURL}/oauth_redirect`;
 
