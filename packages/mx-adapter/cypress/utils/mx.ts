@@ -1,5 +1,3 @@
-import { JobTypes } from "@repo/utils";
-
 import {
   clickContinue,
   expectConnectionSuccess,
@@ -16,14 +14,9 @@ export const enterMxCredentials = () => {
   cy.findByLabelText("Password").type("correct");
 };
 
-export const makeAConnection = async (jobType) => {
+export const makeAConnection = async () => {
   searchAndSelectMx();
   enterMxCredentials();
   clickContinue();
-
-  if ([JobTypes.ALL, JobTypes.VERIFICATION].includes(jobType)) {
-    cy.findByText("Checking").click();
-    clickContinue();
-  }
   expectConnectionSuccess();
 };

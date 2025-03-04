@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - run: npm run copyMXTestPreferences
+      - run: npm run copyTestPreferences
 
       - name: "Create env file"
         run: |
@@ -52,10 +52,6 @@ jobs:
           # Vars
           echo -e "${{ needs.setup-env.outputs.env_vars }}" >> ${ENV_FILE_PATH}
 
-          # Secrets (can't load these from another job, due to GH security features)
-          echo MX_CLIENT_ID=${{ secrets.MX_CLIENT_ID }} >> ${ENV_FILE_PATH}
-          echo MX_API_SECRET=${{ secrets.MX_API_SECRET }} >> ${ENV_FILE_PATH}
-
           # This fails if using https, so we have to override it
           echo HOST_URL=http://localhost:8080 >> ${ENV_FILE_PATH}
 
@@ -64,7 +60,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npm run playwright:test --workspace=packages/mx-adapter
+        run: npm run playwright:test --workspace=apps/server
       - uses: actions/upload-artifact@v4
         if: always()
         with:
