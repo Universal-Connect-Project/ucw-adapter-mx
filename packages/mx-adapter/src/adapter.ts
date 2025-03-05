@@ -8,7 +8,7 @@ import type {
   UpdateConnectionRequest,
   WidgetAdapter,
 } from "@repo/utils";
-import { ChallengeType, ConnectionStatus } from "@repo/utils";
+import { ChallengeType, ComboJobTypes, ConnectionStatus } from "@repo/utils";
 import type {
   CredentialRequest,
   CredentialResponse,
@@ -20,10 +20,17 @@ import type {
 import { MxIntApiClient, MxProdApiClient } from "./apiClient";
 import type { AdapterConfig, CacheClient, LogClient } from "./models";
 
-export const AGGREGATION_JOB_TYPE = 0;
+const MXJobTypeMap = {
+  [ComboJobTypes.ACCOUNT_NUMBER]: "account_verification",
+  [ComboJobTypes.ACCOUNT_OWNER]: "identity_verification",
+  [ComboJobTypes.TRANSACTIONS]: "transactions",
+  [ComboJobTypes.TRANSACTION_HISTORY]: "transaction_history",
+};
 
-export const EXTENDED_HISTORY_NOT_SUPPORTED_MSG =
-  "Member's institution does not support extended transaction history.";
+const convertToMXJobTypes = (jobTypes: ComboJobTypes[]) =>
+  jobTypes.map((jobType: ComboJobTypes) => MXJobTypeMap[jobType]);
+
+export const AGGREGATION_JOB_TYPE = 0;
 
 const mapCredentials = (mxCreds: CredentialsResponseBody): Credential[] => {
   if (mxCreds.credentials != null) {
@@ -60,23 +67,6 @@ export class MxAdapter implements WidgetAdapter {
   cacheClient: CacheClient;
   logClient: LogClient;
   envConfig: Record<string, string>;
-
-  RouteHandlers = {
-    /**
-     * Handles requests to /job/{member_guid}
-     *
-     * @param req - Express request object
-     * @param res - Express response object
-     */
-    jobRequestHandler: async (req: any, res: any) => {
-      if (req.params.member_guid === "null") {
-        res.send({ job: { guid: "none", job_type: AGGREGATION_JOB_TYPE } });
-        return;
-      }
-      const ret = await req.connectApi.loadMemberByGuid(req.params.member_guid);
-      res.send(ret);
-    },
-  };
 
   constructor(args: AdapterConfig) {
     const { int, dependencies } = args;
@@ -136,8 +126,8 @@ export class MxAdapter implements WidgetAdapter {
     request: CreateConnectionRequest,
     userId?: string,
   ): Promise<Connection> {
-    const jobType = request.initial_job_type;
-    const entityId = request.institution_id;
+    const jobTypes = convertToMXJobTypes(request.jobTypes);
+    const entityId = request.institutionId;
     try {
       const existings = await this.apiClient.listMembers(userId || "");
       const existing = existings?.data?.members?.find(
@@ -152,15 +142,13 @@ export class MxAdapter implements WidgetAdapter {
     } catch (e) {
       this.logClient.error(e);
     }
-    // let res = await this.apiClient.listInstitutionCredentials(entityId)
-    // console.log(request)
+
     const memberRes = await this.apiClient.createMember(userId || "", {
       referral_source: "APP", // request.is_oauth ? 'APP' : '',
       client_redirect_url: request.is_oauth
         ? `${this.envConfig.HOSTURL}/oauth_redirect`
         : null,
       member: {
-        skip_aggregation: request.skip_aggregation || jobType !== "aggregate",
         is_oauth: request.is_oauth,
         credentials: request.credentials?.map(
           (c) =>
@@ -171,45 +159,13 @@ export class MxAdapter implements WidgetAdapter {
         ),
         institution_code: entityId,
       },
+      data_request: {
+        products: jobTypes,
+      },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const member = memberRes.data.member;
-
-    if (!request?.is_oauth) {
-      if (
-        ["verification", "aggregate_identity_verification"].includes(
-          jobType || "",
-        )
-      ) {
-        const updatedMemberRes = await this.apiClient.verifyMember(
-          member?.guid || "",
-          userId || "",
-        );
-        return fromMxMember(
-          updatedMemberRes?.data?.member || {},
-          this.aggregator,
-        );
-      } else if (jobType === "aggregate_identity") {
-        const updatedMemberRes = await this.apiClient.identifyMember(
-          member?.guid || "",
-          userId || "",
-        );
-        return fromMxMember(
-          updatedMemberRes?.data?.member || {},
-          this.aggregator,
-        );
-      } else if (jobType === "aggregate_extendedhistory") {
-        const updatedMemberRes = await this.apiClient.extendHistory(
-          member?.guid || "",
-          userId || "",
-        );
-        return fromMxMember(
-          updatedMemberRes?.data?.member || {},
-          this.aggregator,
-        );
-      }
-    }
 
     return fromMxMember(member || {}, this.aggregator);
   }
@@ -226,60 +182,6 @@ export class MxAdapter implements WidgetAdapter {
   async UpdateConnection(
     request: UpdateConnectionRequest,
     userId?: string,
-  ): Promise<Connection> {
-    let ret;
-
-    try {
-      if (request.job_type === "verification") {
-        ret = await this.apiClient.verifyMember(request.id || "", userId || "");
-      } else if (request.job_type === "aggregate_identity") {
-        ret = await this.apiClient.identifyMember(
-          request.id || "",
-          userId || "",
-          {
-            data: { member: { include_transactions: true } },
-          },
-        );
-      } else if (request.job_type === "aggregate_extendedhistory") {
-        ret = await this.apiClient.extendHistory(
-          request.id || "",
-          userId || "",
-        );
-      } else {
-        ret = await this.apiClient.aggregateMember(
-          request.id || "",
-          userId || "",
-        );
-      }
-    } catch (e: any) {
-      if (
-        e?.response?.data?.error?.message === EXTENDED_HISTORY_NOT_SUPPORTED_MSG
-      ) {
-        try {
-          ret = await this.apiClient.aggregateMember(
-            request.id || "",
-            userId || "",
-          );
-        } catch (e: any) {
-          return {
-            id: request.id || "",
-            error_message: e?.response?.data?.error?.message,
-          };
-        }
-      } else {
-        return {
-          id: request.id || "",
-          error_message: e?.response?.data?.error?.message,
-        };
-      }
-    }
-
-    return fromMxMember(ret.data.member || {}, this.aggregator);
-  }
-
-  async UpdateConnectionInternal(
-    request: UpdateConnectionRequest,
-    userId: string,
   ): Promise<Connection> {
     const ret = await this.apiClient.updateMember(request.id || "", userId, {
       member: {
@@ -309,7 +211,7 @@ export class MxAdapter implements WidgetAdapter {
       is_being_aggregated: member?.is_being_aggregated,
       oauth_window_uri: member?.oauth_window_uri,
       aggregator: this.aggregator,
-      user_id: userId,
+      userId: userId,
     };
   }
 
@@ -332,11 +234,7 @@ export class MxAdapter implements WidgetAdapter {
       aggregator: this.aggregator,
       id: member?.guid || "",
       cur_job_id: member?.guid,
-      user_id: userId,
-      // is_oauth: member.is_oauth,
-      // oauth_window_uri: member.oauth_window_uri,
-      // status: member.connection_status,
-      // error_reason: oauthStatus?.error_reason,
+      userId: userId,
       status: ConnectionStatus[status as keyof typeof ConnectionStatus],
       challenges: (member?.challenges ?? []).map((item, idx) => {
         const challenge: Challenge = {
@@ -424,7 +322,7 @@ export class MxAdapter implements WidgetAdapter {
         return ret.data.user.guid || "";
       }
     } catch (e) {
-      this.logClient.trace(`Failed creating mx user, using user_id: ${userId}`);
+      this.logClient.trace(`Failed creating mx user, using userId: ${userId}`);
       return userId;
     }
 
