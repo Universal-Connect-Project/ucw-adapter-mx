@@ -7,7 +7,7 @@ test("connects to mx bank with oAuth", async ({ page }) => {
   const userId = crypto.randomUUID();
 
   await page.goto(
-    `http://localhost:8080/widget?jobTypes=${ComboJobTypes.TRANSACTIONS}&user_id=${userId}`,
+    `http://localhost:8080/widget?jobTypes=${ComboJobTypes.TRANSACTIONS}&userId=${userId}`,
   );
 
   await page.getByPlaceholder("Search").fill("MX Bank (Oauth)");

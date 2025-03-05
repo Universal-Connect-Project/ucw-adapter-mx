@@ -414,7 +414,7 @@ describe("mx aggregator", () => {
           is_oauth: testMember.is_oauth,
           oauth_window_uri: testMember.oauth_window_uri,
           aggregator: "mx",
-          user_id: testUserId,
+          userId: testUserId,
         });
       });
     });
@@ -509,7 +509,7 @@ describe("mx aggregator", () => {
           cur_job_id: testMember.guid,
           aggregator: "mx",
           id: testMember.guid,
-          user_id: userId,
+          userId: userId,
           status:
             ConnectionStatus[
               testMember.connection_status as keyof typeof ConnectionStatus
