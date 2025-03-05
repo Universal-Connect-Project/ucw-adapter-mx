@@ -117,7 +117,7 @@ export class MxAdapter implements WidgetAdapter {
     userId?: string,
   ): Promise<Connection> {
     const jobTypes = request.jobTypes;
-    const entityId = request.institution_id;
+    const entityId = request.institutionId;
     try {
       const existings = await this.apiClient.listMembers(userId || "");
       const existing = existings?.data?.members?.find(

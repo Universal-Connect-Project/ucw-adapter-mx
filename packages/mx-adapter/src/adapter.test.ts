@@ -209,7 +209,7 @@ describe("mx aggregator", () => {
         background_aggregation_is_disabled: false,
         credentials: [testCredential],
         jobTypes: [ComboJobTypes.TRANSACTIONS, ComboJobTypes.ACCOUNT_NUMBER],
-        institution_id: "testInstitutionId",
+        institutionId: "testInstitutionId",
         is_oauth: false,
         skip_aggregation: false,
         metadata: "testMetadata",
@@ -231,7 +231,7 @@ describe("mx aggregator", () => {
         await mxAdapter.CreateConnection(
           {
             ...baseConnectionRequest,
-            institution_id: membersData.members[0].institution_code,
+            institutionId: membersData.members[0].institution_code,
             is_oauth: true,
           },
           "testUserId",
@@ -300,7 +300,7 @@ describe("mx aggregator", () => {
                   value: baseConnectionRequest.credentials[0].value,
                 },
               ],
-              institution_code: baseConnectionRequest.institution_id,
+              institution_code: baseConnectionRequest.institutionId,
               is_oauth: true,
             },
             data_request: { products: baseConnectionRequest.jobTypes },
