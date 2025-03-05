@@ -201,7 +201,7 @@ export class MxAdapter implements WidgetAdapter {
       is_being_aggregated: member?.is_being_aggregated,
       oauth_window_uri: member?.oauth_window_uri,
       aggregator: this.aggregator,
-      user_id: userId,
+      userId: userId,
     };
   }
 
@@ -224,7 +224,7 @@ export class MxAdapter implements WidgetAdapter {
       aggregator: this.aggregator,
       id: member?.guid || "",
       cur_job_id: member?.guid,
-      user_id: userId,
+      userId: userId,
       status: ConnectionStatus[status as keyof typeof ConnectionStatus],
       challenges: (member?.challenges ?? []).map((item, idx) => {
         const challenge: Challenge = {
@@ -312,7 +312,7 @@ export class MxAdapter implements WidgetAdapter {
         return ret.data.user.guid || "";
       }
     } catch (e) {
-      this.logClient.trace(`Failed creating mx user, using user_id: ${userId}`);
+      this.logClient.trace(`Failed creating mx user, using userId: ${userId}`);
       return userId;
     }
 
