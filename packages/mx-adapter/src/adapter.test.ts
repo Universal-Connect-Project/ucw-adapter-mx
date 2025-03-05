@@ -303,7 +303,9 @@ describe("mx aggregator", () => {
               institution_code: baseConnectionRequest.institutionId,
               is_oauth: true,
             },
-            data_request: { products: baseConnectionRequest.jobTypes },
+            data_request: {
+              products: ["transactions", "account_verification"],
+            },
             referral_source: "APP",
           });
         });

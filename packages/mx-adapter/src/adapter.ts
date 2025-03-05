@@ -8,7 +8,7 @@ import type {
   UpdateConnectionRequest,
   WidgetAdapter,
 } from "@repo/utils";
-import { ChallengeType, ConnectionStatus } from "@repo/utils";
+import { ChallengeType, ComboJobTypes, ConnectionStatus } from "@repo/utils";
 import type {
   CredentialRequest,
   CredentialResponse,
@@ -19,6 +19,16 @@ import type {
 
 import { MxIntApiClient, MxProdApiClient } from "./apiClient";
 import type { AdapterConfig, CacheClient, LogClient } from "./models";
+
+const MXJobTypeMap = {
+  [ComboJobTypes.ACCOUNT_NUMBER]: "account_verification",
+  [ComboJobTypes.ACCOUNT_OWNER]: "identity_verification",
+  [ComboJobTypes.TRANSACTIONS]: "transactions",
+  [ComboJobTypes.TRANSACTION_HISTORY]: "transaction_history",
+};
+
+const convertToMXJobTypes = (jobTypes: ComboJobTypes[]) =>
+  jobTypes.map((jobType: ComboJobTypes) => MXJobTypeMap[jobType]);
 
 export const AGGREGATION_JOB_TYPE = 0;
 
@@ -116,7 +126,7 @@ export class MxAdapter implements WidgetAdapter {
     request: CreateConnectionRequest,
     userId?: string,
   ): Promise<Connection> {
-    const jobTypes = request.jobTypes;
+    const jobTypes = convertToMXJobTypes(request.jobTypes);
     const entityId = request.institutionId;
     try {
       const existings = await this.apiClient.listMembers(userId || "");
