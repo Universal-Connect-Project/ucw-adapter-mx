@@ -57,6 +57,8 @@ test("shows an error page if you deny an mx bank oauth connection", async ({
   await authorizeTab.getByRole("button", { name: "Deny" }).click();
   await expect(authorizeTab.getByText("Something went wrong")).toBeVisible();
 
+  // When we fix the issue so that we can see an error state we need to check for it here
+
   const apiRequest = page.context().request;
   await apiRequest.delete(
     `http://localhost:8080/api/aggregator/mx_int/user/${userId}`,
