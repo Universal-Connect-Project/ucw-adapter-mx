@@ -58,7 +58,7 @@ const mxAdapter = new MxAdapter({
 });
 
 const institutionResponse = institutionData.institution;
-const clientRedirectUrl = `${HOSTURL}/oauth_redirect`;
+const clientRedirectUrl = `${HOSTURL}/oauth/mx/redirect_from/`;
 
 const testCredential = {
   id: "testCredentialId",
@@ -656,6 +656,29 @@ describe("mx aggregator", () => {
         await expect(
           async () => await mxAdapter.ResolveUserId(userId, true),
         ).rejects.toThrow("User not resolved successfully");
+      });
+    });
+
+    describe("HandleOauthResponse", () => {
+      it("responds with success if the status is success", async () => {
+        const ret = await mxAdapter.HandleOauthResponse({
+          query: {
+            status: "success",
+          },
+        });
+
+        expect(ret).toEqual({
+          status: ConnectionStatus.CONNECTED,
+        });
+      });
+
+      it("returns with denied if the status is not success", async () => {
+        const ret = await mxAdapter.HandleOauthResponse({
+          query: {},
+        });
+        expect(ret).toEqual({
+          status: ConnectionStatus.DENIED,
+        });
       });
     });
   });

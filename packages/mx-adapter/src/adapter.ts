@@ -144,9 +144,9 @@ export class MxAdapter implements WidgetAdapter {
     }
 
     const memberRes = await this.apiClient.createMember(userId || "", {
-      referral_source: "APP", // request.is_oauth ? 'APP' : '',
+      referral_source: "APP",
       client_redirect_url: request.is_oauth
-        ? `${this.envConfig.HOSTURL}/oauth_redirect`
+        ? `${this.envConfig.HOSTURL}/oauth/${this.aggregator}/redirect_from/`
         : null,
       member: {
         is_oauth: request.is_oauth,
@@ -327,5 +327,23 @@ export class MxAdapter implements WidgetAdapter {
     }
 
     return userId;
+  }
+
+  async HandleOauthResponse({
+    query,
+  }: {
+    query: Record<string, string>;
+  }): Promise<Connection> {
+    const { status } = query;
+
+    if (status === "success") {
+      return {
+        status: ConnectionStatus.CONNECTED,
+      } as Connection;
+    }
+
+    return {
+      status: ConnectionStatus.DENIED,
+    } as Connection;
   }
 }
